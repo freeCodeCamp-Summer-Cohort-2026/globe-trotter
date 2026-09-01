@@ -1,0 +1,12 @@
+packages:
+  - "apps/*"
+  - "packages/config/eslint"
+  - "packages/config/tailwind"
+  - "packages/config/jest"
+  - "packages/config/typescript"
+  - "packages/database"
+  - "packages/ui"
+
+allowBuilds:
+  "@parcel/watcher": true
+  unrs-resolver: true
