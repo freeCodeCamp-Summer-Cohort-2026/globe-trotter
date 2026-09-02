@@ -2,6 +2,7 @@ import { globalIgnores } from "eslint/config";
 import pluginReactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
+import pluginTailwindcss from "eslint-plugin-tailwindcss";
 import { config as baseConfig } from "./base.js";
 
 /**
@@ -41,6 +42,14 @@ export const nextJsConfig = [
     },
     rules: {
       ...pluginReactHooks.configs.recommended.rules,
+    },
+  },
+  pluginTailwindcss.configs.recommended,
+  {
+    settings: {
+      tailwindcss: {
+        cssConfigPath: "./app/globals.css",
+      },
     },
   },
 ];
