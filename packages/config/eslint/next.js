@@ -44,7 +44,7 @@ export const nextJsConfig = [
       ...pluginReactHooks.configs.recommended.rules,
     },
   },
-  pluginTailwindcss.configs.recommended,
+  pluginTailwindcss.configs["flat/recommended"],
   {
     settings: {
       tailwindcss: {
