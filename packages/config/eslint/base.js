@@ -17,6 +17,11 @@ export const config = [
   ...tseslint.configs.recommended,
 
   {
+    files: [
+      "**/*.test.{js,ts,tsx}",
+      "**/*.spec.{js,ts,tsx}",
+      "**/__tests__/**",
+    ],
     plugins: {
       jest: jestPlugin,
     },
