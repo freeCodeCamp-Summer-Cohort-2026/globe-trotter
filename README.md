@@ -2,7 +2,7 @@
 
 Globe Trotter is a platform for teaching any general geography topic (starting with world geography - countries, capitals, flags) through short two-minute tutorials and longer open-ended labs. It's a general-purpose teaching engine, not a fixed geography curriculum.
 
-Learners interact with a live map and other visual/spatial elements directly in the browser, and use the same to improve their knowledge of world geography.
+Learners interact with a live map and other visual/spatial elements directly in the browser, and use the same to improve their knowledge of world geography. Users may also use this app to author content and create their own learning modules to contribute to the larger community of geography learners. 
 
 
 ## Tech Stack
@@ -13,7 +13,7 @@ Learners interact with a live map and other visual/spatial elements directly in 
 
 **Database** - PostgreSQL + Drizzle
 
-**Interactive map** - React-map-gl for abstracted geography, React leaflet for landmarks, React simple maps for basic positions, Vis. GL for 3D maps
+**Interactive map** - Maplibre GL JS, react-map-gl
 
 **Auth**: JWT
 
