@@ -13,7 +13,6 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
     "drizzle-orm": "^0.44.5",
     "pg": "^8.16.3"
   },
@@ -21,6 +20,7 @@
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^26.4.1",
     "@types/pg": "^8.15.5",
+    "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.4",
     "tsx": "^4.20.3",
     "typescript": "7.0.2"
