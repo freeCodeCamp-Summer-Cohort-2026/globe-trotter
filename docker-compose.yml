@@ -26,6 +26,7 @@ services:
       - "4000:4000"
     environment:
       DATABASE_URL: postgres://globe-trotter:globe-trotter@postgres:5432/globe-trotter
+      PORT: 4000
     depends_on:
       postgres:
         condition: service_healthy
@@ -41,7 +42,7 @@ services:
     depends_on:
       - api
     ports:
-      - "3001:3001"
+      - "3001:3000"
 
 volumes:
   postgres_data: 
