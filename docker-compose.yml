@@ -2,13 +2,13 @@ services:
   postgres:
     image: postgres:15
     environment:
-      POSTGRES_USER: globe-trotter
-      POSTGRES_PASSWORD: globe-trotter
-      POSTGRES_DB: globe-trotter
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes: 
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U globe-trotter"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -25,7 +25,7 @@ services:
     ports:
       - "4000:4000"
     environment:
-      DATABASE_URL: postgres://globe-trotter:globe-trotter@postgres:5432/globe-trotter
+      DATABASE_URL: ${DATABASE_URL}
       PORT: 4000
     depends_on:
       postgres:

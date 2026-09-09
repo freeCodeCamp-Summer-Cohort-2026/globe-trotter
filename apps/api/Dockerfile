@@ -13,7 +13,7 @@ COPY ./packages/config/typescript/package.json ./packages/config/typescript/
 COPY ./packages/database/package.json ./packages/database/
 COPY ./packages/ui/package.json ./packages/ui/
 COPY apps/api/package.json ./apps/api/package.json
-RUN pnpm i
+RUN pnpm i --frozen-lockfile
 # Copy source code in a seperate layer after dependencies are installed
 COPY . .
 WORKDIR /app/apps/api

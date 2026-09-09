@@ -34,7 +34,7 @@ CMD ["pnpm", "--filter", "web", "run", "start"]
 #dev mode for hot reload
 FROM node:24-alpine AS dev
 WORKDIR /app
-ARG NEXT_PUBLIC_API_URL=http://localhost:3001
+ARG NEXT_PUBLIC_API_URL=http://localhost:4000
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 RUN npm i -g pnpm
 COPY package*.json ./
