@@ -13,7 +13,7 @@ import { modules } from './modules';
 export const tutorials = pgTable(
   'tutorials',
   {
-    id: uuid('id').primaryKey(),
+    id: uuid('id').primaryKey().defaultRandom(),
 
     moduleId: uuid('module_id')
       .notNull()

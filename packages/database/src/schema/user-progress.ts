@@ -25,7 +25,7 @@ export const userProgressStatusEnum = pgEnum('user_progress_status', [
 export const userProgress = pgTable(
   'user_progress',
   {
-    id: uuid('id').primaryKey(),
+    id: uuid('id').primaryKey().defaultRandom(),
 
     userId: uuid('user_id')
       .notNull()
@@ -53,12 +53,14 @@ export const userProgress = pgTable(
     updatedAt: timestamp('updated_at').notNull(),
   },
   (table) => [
-    unique('user_progress_unique').on(
-      table.userId,
-      table.moduleId,
-      table.tutorialId,
-      table.labId,
-    ),
+    unique('user_progress_unique')
+      .on(
+        table.userId,
+        table.moduleId,
+        table.tutorialId,
+        table.labId,
+      )
+      .nullsNotDistinct(),
 
     check(
       'user_progress_tutorial_lab_check',

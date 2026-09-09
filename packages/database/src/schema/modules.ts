@@ -2,7 +2,7 @@ import { integer, pgTable, text, timestamp, uuid, boolean } from 'drizzle-orm/pg
 import { users } from './users';
 
 export const modules = pgTable('modules', {
-  id: uuid('id').primaryKey(),
+  id: uuid('id').primaryKey().defaultRandom(),
   authorId: uuid('author_id').references(() => users.id, {
     onDelete: 'set null',
   }),
