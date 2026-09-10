@@ -1,7 +1,48 @@
 @import "tailwindcss";
 
 @theme {
-  --color-blue-1000: #2a8af6;
-  --color-purple-1000: #a853ba;
-  --color-red-1000: #e92a67;
+  --color-green-50: #f2fcf5;
+  --color-green-100: #e9f9ee;
+  --color-green-200: #ddf3e4;
+  --color-green-300: #ccebd7;
+  --color-green-400: #b4dfc4;
+  --color-green-500: #92ceac;
+  --color-green-600: #5bb98c;
+  --color-green-700: #30a46c;
+  --color-green-800: #299764;
+  --color-green-900: #18794e;
+  --color-green-950: #153226;
+
+  --color-blue-50: #f4faff;
+  --color-blue-100: #e6f4fe;
+  --color-blue-200: #d5efff;
+  --color-blue-300: #c2e5ff;
+  --color-blue-400: #acd8fc;
+  --color-blue-500: #8ec8f6;
+  --color-blue-600: #5eb1ef;
+  --color-blue-700: #0090ff;
+  --color-blue-800: #0588f0;
+  --color-blue-900: #0d74ce;
+  --color-blue-950: #113264;
+
+  --color-slate-50: #f9f9fb;
+  --color-slate-100: #f0f0f3;
+  --color-slate-200: #e8e8ec;
+  --color-slate-300: #e0e1e6;
+  --color-slate-400: #d9d9e0;
+  --color-slate-500: #cdced6;
+  --color-slate-600: #b9bbc6;
+  --color-slate-700: #8b8d98;
+  --color-slate-800: #80838d;
+  --color-slate-900: #60646c;
+  --color-slate-950: #1c2024;
+
+  --color-primary: var(--color-green-800);
+
+  --font-inter: "Inter", sans-serif;
+  --font-sora: "Sora", sans-serif;
+
+  --text-base: 1rem;
+  --leading-normal: 1.5;
+  --spacing-4: 1rem;
 }
