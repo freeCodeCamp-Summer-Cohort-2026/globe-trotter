@@ -12,6 +12,9 @@
     "./*": "./dist/*.js"
   },
   "license": "MIT",
+  "dependencies": {
+    "class-variance-authority": "0.7.1"
+  },
   "scripts": {
     "build:styles": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
     "build:components": "tsc",
