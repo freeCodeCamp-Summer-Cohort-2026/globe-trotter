@@ -33,5 +33,10 @@
     "eslint": "10.8.1",
     "tailwindcss": "4.3.3",
     "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0"
   }
 }
