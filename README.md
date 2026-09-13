@@ -24,6 +24,49 @@ Learners interact with a live map and other visual/spatial elements directly in 
 
 You may launch the app on your browser after setting it up locally or using Docker Compose. Once launched, you may use the app as a content creator or as a user. Depending on your chosen role, you will need to register and/or login to the app so that your content and/or your learning history may be saved.
 
+## Local Setup
+
+### 1. Configure environment
+
+Copy the example file:
+
+```bash
+cp .env.example .env
+```
+
+### 2. Start PostgreSQL
+
+To start the full stack (database + API + web) as a build:
+
+```bash
+docker compose up --build
+```
+
+Or, if you prefer running the apps on your host for hot reload, leave only Postgres running in Docker and start the apps with `pnpm dev` from the repo root.
+
+```bash
+docker compose up -d postgres
+```
+
+### 3. Verify the connection
+
+CD into `/packages/database` and then run:
+
+```bash
+pnpm db:health
+```
+
+A successful run prints `Database connection healthy` and exits with code 0. If it exits non-zero, the error message indicates whether `DATABASE_URL` is missing, malformed, or pointing at an unreachable database.
+
+### 4. Run migrations
+
+Also in `/packages/database`, run:
+
+```bash
+pnpm db:migrate
+```
+
+> **Note:** Seeding is not yet wired up (tracked separately). Once available, it will be runnable with `pnpm db:seed` from `/packages/database`.
 
 ## File Structure
 
