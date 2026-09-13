@@ -12,7 +12,11 @@ async function main() {
     console.error('Database health check failed:', error);
     process.exitCode = 1;
   } finally {
-    await closeDatabase();
+    try {
+      await closeDatabase();
+    } catch (err) {
+      console.error('Failed to close DB pool:', err);
+    }
   }
 }
 
