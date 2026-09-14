@@ -2,6 +2,7 @@ import * as React from "react";
 import { cva } from "class-variance-authority";
 
 import { cn } from "./lib/utils";
+import { Spinner } from "./Spinner";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?:
@@ -66,42 +67,6 @@ export const buttonVariants = cva(
     },
   },
 );
-
-const spinnerDimensions = {
-  sm: 12,
-  md: 16,
-  lg: 20,
-};
-
-const Spinner = ({ size }: { size: ButtonProps["size"] }) => {
-  const dim = spinnerDimensions[size ?? "md"];
-
-  return (
-    <svg
-      aria-hidden="true"
-      width={dim}
-      height={dim}
-      viewBox="0 0 24 24"
-      fill="none"
-      className="ui:animate-spin"
-    >
-      <circle
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeOpacity="0.25"
-      />
-      <path
-        d="M22 12a10 10 0 0 0-10-10"
-        stroke="currentColor"
-        strokeWidth="3"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-};
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
