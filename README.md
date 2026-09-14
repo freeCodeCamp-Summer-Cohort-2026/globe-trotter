@@ -24,6 +24,17 @@ Learners interact with a live map and other visual/spatial elements directly in 
 
 You may launch the app on your browser after setting it up locally or using Docker Compose. Once launched, you may use the app as a content creator or as a user. Depending on your chosen role, you will need to register and/or login to the app so that your content and/or your learning history may be saved.
 
+## Quickstart
+The fastest way to run the whole stack is Docker Compose
+```
+docker compose up --build
+```
+
+This starts three services:
+ - `postgres` - postgres on port `5432`
+ - `api` - NestJs API on http://localhost:4000/
+ - `web` - Next.js frontend on http://localhost:3001/
+
 
 ## File Structure
 
