@@ -23,7 +23,7 @@ services:
     ports:
       - "127.0.0.1:4000:4000"
     environment:
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       PORT: 4000
     depends_on:
       postgres:
