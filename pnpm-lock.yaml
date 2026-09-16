@@ -254,6 +254,15 @@ importers:
         specifier: 7.0.2
         version: 7.0.2
 
+  packages/types:
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../config/typescript
+      typescript:
+        specifier: 7.0.2
+        version: 7.0.2
+
   packages/ui:
     dependencies:
       class-variance-authority:
