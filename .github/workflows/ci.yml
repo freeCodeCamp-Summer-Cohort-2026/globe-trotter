@@ -38,4 +38,4 @@ jobs:
           run: pnpm lint  
 
         - name: Test
-          run: pnpm --filter api test  
+          run: pnpm test  
