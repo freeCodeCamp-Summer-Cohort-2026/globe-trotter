@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';
 
@@ -14,7 +12,11 @@ if (!databaseUrl) {
 try {
   const url = new URL(databaseUrl);
 
-  if (url.protocol !== 'postgresql:' && url.protocol !== 'postgres:') {
+  if (
+    (url.protocol !== 'postgresql:' && url.protocol !== 'postgres:') ||
+    !url.hostname ||
+    !url.username
+  ) {
     throw new Error();
   }
 } catch (error) {
