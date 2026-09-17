@@ -9,7 +9,11 @@ RUN corepack enable pnpm
 # ==========================================
 FROM base AS pruner
 WORKDIR /app
+<<<<<<< HEAD
 RUN npm install -g turbo@2.10.12
+=======
+RUN npm install -g turbo@^2
+>>>>>>> c8f3b7a08822552fb6d619eee81ea8cec2005635
 
 # Copy the entire monorepo and prune it down to just the 'api' app and its dependencies
 COPY . .
