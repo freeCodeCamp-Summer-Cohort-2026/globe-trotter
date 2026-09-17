@@ -1,37 +1,47 @@
-export type RegionSelectionGoal = {
+type RegionSelectionGoal = {
   type: "region_selection";
   iso_a2: string;
 };
 
-export type PathDrawingGoal = {
+type PathDrawingGoal = {
   type: "path_drawing";
   coordinates: [number, number][];
   tolerance_meters: number;
 };
 
-export type PolygonDrawingGoal = {
+type PolygonDrawingGoal = {
   type: "polygon_drawing";
   coordinates: [number, number][][];
   tolerance_meters: number;
 };
 
-export type TextInputGoal = {
+type TextInputGoal = {
   type: "text_input";
   value: string;
   caseSensitive: boolean;
 };
 
-export type MultipleChoiceGoal = {
+type MultipleChoiceGoal = {
   type: "multiple_choice";
   correctIndex: number;
 };
 
-export type MapInteractionType =
+type MapInteractionType =
   | RegionSelectionGoal
   | PathDrawingGoal
   | PolygonDrawingGoal
   | TextInputGoal
   | MultipleChoiceGoal;
 
-export type MapTemplateId =
+type MapTemplateId =
   "world-political" | "world-physical" | "satellite-3d";
+
+export type {
+  MapInteractionType,
+  MapTemplateId,
+  MultipleChoiceGoal,
+  PathDrawingGoal,
+  PolygonDrawingGoal,
+  RegionSelectionGoal,
+  TextInputGoal
+};
