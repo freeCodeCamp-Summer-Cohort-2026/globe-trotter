@@ -1,5 +1,5 @@
 {
-  "id": "e582b75c-f6d8-4563-a3d1-4bcafe0fcb28",
+  "id": "a5f39727-7ede-42ae-a08c-8d0afdc1ed77",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -12,7 +12,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "module_id": {
           "name": "module_id",
@@ -118,7 +119,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "author_id": {
           "name": "author_id",
@@ -199,7 +201,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "module_id": {
           "name": "module_id",
@@ -305,7 +308,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "user_id": {
           "name": "user_id",
@@ -471,7 +475,7 @@
       "uniqueConstraints": {
         "user_progress_unique": {
           "name": "user_progress_unique",
-          "nullsNotDistinct": false,
+          "nullsNotDistinct": true,
           "columns": [
             "user_id",
             "module_id",
@@ -497,7 +501,8 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "email": {
           "name": "email",
@@ -548,7 +553,26 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.user_progress_status": {
+      "name": "user_progress_status",
+      "schema": "public",
+      "values": [
+        "not_started",
+        "in_progress",
+        "completed",
+        "failed"
+      ]
+    },
+    "public.user_role": {
+      "name": "user_role",
+      "schema": "public",
+      "values": [
+        "learner",
+        "author"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},

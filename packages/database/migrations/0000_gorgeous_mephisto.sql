@@ -1,5 +1,7 @@
+CREATE TYPE "public"."user_progress_status" AS ENUM('not_started', 'in_progress', 'completed', 'failed');--> statement-breakpoint
+CREATE TYPE "public"."user_role" AS ENUM('learner', 'author');--> statement-breakpoint
 CREATE TABLE "labs" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"module_id" uuid NOT NULL,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
@@ -11,7 +13,7 @@ CREATE TABLE "labs" (
 );
 --> statement-breakpoint
 CREATE TABLE "modules" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"author_id" uuid,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
@@ -23,7 +25,7 @@ CREATE TABLE "modules" (
 );
 --> statement-breakpoint
 CREATE TABLE "tutorials" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"module_id" uuid NOT NULL,
 	"title" text NOT NULL,
 	"description" text NOT NULL,
@@ -35,7 +37,7 @@ CREATE TABLE "tutorials" (
 );
 --> statement-breakpoint
 CREATE TABLE "user_progress" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
 	"module_id" uuid NOT NULL,
 	"tutorial_id" uuid,
@@ -43,12 +45,12 @@ CREATE TABLE "user_progress" (
 	"status" "user_progress_status" NOT NULL,
 	"created_at" timestamp NOT NULL,
 	"updated_at" timestamp NOT NULL,
-	CONSTRAINT "user_progress_unique" UNIQUE("user_id","module_id","tutorial_id","lab_id"),
+	CONSTRAINT "user_progress_unique" UNIQUE NULLS NOT DISTINCT("user_id","module_id","tutorial_id","lab_id"),
 	CONSTRAINT "user_progress_tutorial_lab_check" CHECK ("user_progress"."tutorial_id" IS NULL OR "user_progress"."lab_id" IS NULL)
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" text NOT NULL,
 	"password_hash" text NOT NULL,
 	"role" "user_role" NOT NULL,
