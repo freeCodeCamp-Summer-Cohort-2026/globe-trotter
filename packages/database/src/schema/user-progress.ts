@@ -74,7 +74,7 @@ export const userProgress = pgTable(
       sql`${table.tutorialId} IS NOT NULL OR ${table.labId} IS NOT NULL`,
     ),
 
-    // Composite FKs enforce that tutorial/lab belongs to their respective module
+    // Composite FKs enforce that tutorial/lab belongs to their respective module (e.g. when hitting POST /user-progress)
     foreignKey({
       columns: [table.tutorialId, table.moduleId],
       foreignColumns: [tutorials.id, tutorials.moduleId],
