@@ -37,5 +37,9 @@ export const labs = pgTable(
       table.moduleId,
       table.orderIndex,
     ),
+    unique('labs_id_module_unique').on(
+      table.id,
+      table.moduleId
+    )
   ],
 );

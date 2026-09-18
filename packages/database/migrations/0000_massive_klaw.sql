@@ -9,7 +9,8 @@ CREATE TABLE "labs" (
 	"order_index" integer NOT NULL,
 	"created_at" timestamp NOT NULL,
 	"updated_at" timestamp NOT NULL,
-	CONSTRAINT "labs_module_order_unique" UNIQUE("module_id","order_index")
+	CONSTRAINT "labs_module_order_unique" UNIQUE("module_id","order_index"),
+	CONSTRAINT "labs_id_module_unique" UNIQUE("id","module_id")
 );
 --> statement-breakpoint
 CREATE TABLE "modules" (
@@ -33,7 +34,8 @@ CREATE TABLE "tutorials" (
 	"order_index" integer NOT NULL,
 	"created_at" timestamp NOT NULL,
 	"updated_at" timestamp NOT NULL,
-	CONSTRAINT "tutorials_module_order_unique" UNIQUE("module_id","order_index")
+	CONSTRAINT "tutorials_module_order_unique" UNIQUE("module_id","order_index"),
+	CONSTRAINT "tutorials_id_module_unique" UNIQUE("id","module_id")
 );
 --> statement-breakpoint
 CREATE TABLE "user_progress" (
@@ -46,7 +48,8 @@ CREATE TABLE "user_progress" (
 	"created_at" timestamp NOT NULL,
 	"updated_at" timestamp NOT NULL,
 	CONSTRAINT "user_progress_unique" UNIQUE NULLS NOT DISTINCT("user_id","module_id","tutorial_id","lab_id"),
-	CONSTRAINT "user_progress_tutorial_lab_check" CHECK ("user_progress"."tutorial_id" IS NULL OR "user_progress"."lab_id" IS NULL)
+	CONSTRAINT "user_progress_tutorial_lab_check" CHECK ("user_progress"."tutorial_id" IS NULL OR "user_progress"."lab_id" IS NULL),
+	CONSTRAINT "user_progress_tutorial_or_lab_check" CHECK ("user_progress"."tutorial_id" IS NOT NULL OR "user_progress"."lab_id" IS NOT NULL)
 );
 --> statement-breakpoint
 CREATE TABLE "users" (
@@ -66,6 +69,8 @@ ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_user_id_users_id_fk" F
 ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_module_id_modules_id_fk" FOREIGN KEY ("module_id") REFERENCES "public"."modules"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_tutorial_id_tutorials_id_fk" FOREIGN KEY ("tutorial_id") REFERENCES "public"."tutorials"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_lab_id_labs_id_fk" FOREIGN KEY ("lab_id") REFERENCES "public"."labs"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_tutorial_module_fk" FOREIGN KEY ("tutorial_id","module_id") REFERENCES "public"."tutorials"("id","module_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_lab_module_fk" FOREIGN KEY ("lab_id","module_id") REFERENCES "public"."labs"("id","module_id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "labs_module_order_idx" ON "labs" USING btree ("module_id","order_index");--> statement-breakpoint
 CREATE INDEX "tutorials_module_order_idx" ON "tutorials" USING btree ("module_id","order_index");--> statement-breakpoint
 CREATE INDEX "user_progress_user_id_idx" ON "user_progress" USING btree ("user_id");--> statement-breakpoint

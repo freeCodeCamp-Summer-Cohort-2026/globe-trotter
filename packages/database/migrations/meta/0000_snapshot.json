@@ -1,5 +1,5 @@
 {
-  "id": "a5f39727-7ede-42ae-a08c-8d0afdc1ed77",
+  "id": "699ef9fe-28b1-4211-b0fb-e7a2260aea00",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -104,6 +104,14 @@
           "columns": [
             "module_id",
             "order_index"
+          ]
+        },
+        "labs_id_module_unique": {
+          "name": "labs_id_module_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "module_id"
           ]
         }
       },
@@ -294,6 +302,14 @@
             "module_id",
             "order_index"
           ]
+        },
+        "tutorials_id_module_unique": {
+          "name": "tutorials_id_module_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id",
+            "module_id"
+          ]
         }
       },
       "policies": {},
@@ -469,6 +485,36 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
+        },
+        "user_progress_tutorial_module_fk": {
+          "name": "user_progress_tutorial_module_fk",
+          "tableFrom": "user_progress",
+          "tableTo": "tutorials",
+          "columnsFrom": [
+            "tutorial_id",
+            "module_id"
+          ],
+          "columnsTo": [
+            "id",
+            "module_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "user_progress_lab_module_fk": {
+          "name": "user_progress_lab_module_fk",
+          "tableFrom": "user_progress",
+          "tableTo": "labs",
+          "columnsFrom": [
+            "lab_id",
+            "module_id"
+          ],
+          "columnsTo": [
+            "id",
+            "module_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -489,6 +535,10 @@
         "user_progress_tutorial_lab_check": {
           "name": "user_progress_tutorial_lab_check",
           "value": "\"user_progress\".\"tutorial_id\" IS NULL OR \"user_progress\".\"lab_id\" IS NULL"
+        },
+        "user_progress_tutorial_or_lab_check": {
+          "name": "user_progress_tutorial_or_lab_check",
+          "value": "\"user_progress\".\"tutorial_id\" IS NOT NULL OR \"user_progress\".\"lab_id\" IS NOT NULL"
         }
       },
       "isRLSEnabled": false

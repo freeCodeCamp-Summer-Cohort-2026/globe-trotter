@@ -8,6 +8,7 @@ import {
   timestamp,
   unique,
   uuid,
+  foreignKey
 } from 'drizzle-orm/pg-core';
 
 import { users } from './users';
@@ -66,6 +67,24 @@ export const userProgress = pgTable(
       'user_progress_tutorial_lab_check',
       sql`${table.tutorialId} IS NULL OR ${table.labId} IS NULL`,
     ),
+
+    // Check to enforce that user progress only tracks labs and tutorials - modules' progress can be determined by orderIndex/totalLessons for e.g.
+    check(
+      'user_progress_tutorial_or_lab_check',
+      sql`${table.tutorialId} IS NOT NULL OR ${table.labId} IS NOT NULL`,
+    ),
+
+    // Composite FKs enforce that tutorial/lab belongs to their respective module
+    foreignKey({
+      columns: [table.tutorialId, table.moduleId],
+      foreignColumns: [tutorials.id, tutorials.moduleId],
+      name: 'user_progress_tutorial_module_fk',
+    }),
+    foreignKey({
+      columns: [table.labId, table.moduleId],
+      foreignColumns: [labs.id, labs.moduleId],
+      name: 'user_progress_lab_module_fk',
+    }),
 
     index('user_progress_user_id_idx').on(table.userId),
     index('user_progress_module_id_idx').on(table.moduleId),

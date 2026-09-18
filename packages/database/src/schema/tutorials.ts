@@ -37,5 +37,9 @@ export const tutorials = pgTable(
       table.moduleId,
       table.orderIndex,
     ),
+    unique('tutorials_id_module_unique').on(
+      table.id,
+      table.moduleId
+    )
   ],
 );
