@@ -1,0 +1,16 @@
+# Secrets and env files
+.env
+.env.*
+*.pem
+
+# Git
+.git
+.gitignore
+
+# Node modules and builds
+node_modules
+.next
+dist
+out
+coverage
+build

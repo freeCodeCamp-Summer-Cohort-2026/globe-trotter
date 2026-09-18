@@ -9,6 +9,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/seed.ts",
+    "db:health": "tsx src/health.ts",
+    "test": "jest --passWithNoTests",
     "build": "tsc",
     "check-types": "tsc --noEmit"
   },
@@ -22,6 +24,7 @@
     "@types/pg": "^8.15.5",
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.4",
+    "jest": "^30.2.0",
     "tsx": "^4.20.3",
     "typescript": "7.0.2"
   }

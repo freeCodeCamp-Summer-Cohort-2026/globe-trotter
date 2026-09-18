@@ -177,7 +177,7 @@ The map system provides reusable templates and interaction components for tutori
 
 ---
 
-## 4. Backend API Endpoints
+## 4. API Endpoints
 
 ### Module Endpoints
 
@@ -219,7 +219,65 @@ The map system provides reusable templates and interaction components for tutori
 
 ---
 
-## 5. Database Schema Summary
+## 5. Auth workflow Summary (by Pawan)
+
+### On the simplification suggestions
+
+**Refresh token rotation** :  agreed, that's not needed for MVP. "Issue refresh token, store hashed, invalidate on logout" is enough to start. Rotation + reuse detection is a good post-MVP hardening step once we have real traffic to justify the complexity.
+
+**CSRF**  : since it's not much extra work, I'll keep it in. Better to have it from day one than retrofit it later once more routes depend on cookie auth.
+
+**Rate limiting** :  in-memory is fine for MVP. No need for database-backed tracking until we're running multiple server instances and need the limit to be shared across them.
+
+### About other questions
+
+- **Password rules**: min 8 characters, at least one uppercase, one lowercase, one number.
+- **Env variables**: `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET`, plus whatever Better Auth needs for its own config, and Google OAuth client ID/secret.
+- **Frontend routes**: `/login`, `/signup`, `/forgot-password`, and a `/reset-password` page for the reset link.
+
+### Proposing a change: using Better Auth, and including credential login in the MVP
+
+I think we should build email + password login into the MVP, not just Google and I think Better Auth is the right way to do it without taking on a lot of extra build time.
+
+#### What this changes about the workflow doc
+
+The core shape stays the same : JWT-style tokens, HTTP-only cookies, hashed refresh token storage, rate-limited login. The main difference is that Better Auth would own the implementation of most of that instead of us hand-rolling it, and we'd add Google as a second, equally-supported login path from day one rather than the only path.
+
+### 5.1 Core Components 
+
+| Component | Details |
+| :--- | :--- |
+| Credentials | Email (unique) + password, via Better Auth |
+| Password storage | Handled by Better Auth (bcrypt/argon2 under the hood) |
+| Social login | Google, via Better Auth, alongside credentials from day one |
+| User roles | `learner` \| `author`, stored on the user record |
+| Access token | Short-lived, HTTP-only cookie |
+| Refresh token | Longer-lived, HTTP-only cookie; hash stored server-side so it can be invalidated on logout |
+| Session model | Managed by Better Auth; no manual rotation/reuse-detection logic needed for MVP |
+
+### 5.2 Chosen Method: Better Auth (JWT + HTTP-only cookies under the hood)
+
+Same reasoning as before for JWT + cookies - stateless where possible, HTTP-only to block XSS token theft. The change is that Better Auth implements this for us, and provides Google sign-in as a first-class second path rather than something bolted on later.
+
+### 5.3 Token Handling (MVP)
+
+- Access + refresh tokens issued and managed by Better Auth
+- Refresh token hash stored server-side
+- On logout: refresh token is invalidated
+- Rotation and reuse detection: deferred to post-MVP
+
+### 5.4 Edge Cases and Security (MVP)
+
+- **Brute force**: in-memory rate limiting on login (Better Auth or NestJS `throttler`)
+- **Email verification**: verification token at signup
+- **Password reset**: single-use reset token, invalidates existing sessions on success
+- **CSRF**: kept in for MVP - `SameSite=lax` + CSRF token on state-changing routes
+- **Password rules**: min 8 characters, 1 uppercase, 1 lowercase, 1 number
+- **Google account linking**: a user who signs up with Google and later sets a password (or vice versa) resolves to the same account - handled by Better Auth's account-linking
+
+---
+
+## 6. Database Schema Summary
 
 The database is managed by Drizzle ORM in `packages/database`.
 
@@ -240,7 +298,7 @@ The database is managed by Drizzle ORM in `packages/database`.
 
 ---
 
-## 6. Error Handling
+## 7. Error Handling
 
 - Single, reusable error page that handles all HTTP status codes and network errors (where appropriate).
 - Global error boundary in Next.js (client-side) and custom error page (server-side).
@@ -252,7 +310,7 @@ The database is managed by Drizzle ORM in `packages/database`.
 
 ---
 
-## Success Criteria (What "Done" Looks Like)
+## Success Criteria
 
 - Authors can create a module and add tutorials/labs to it.
 - Authors can configure a map template for each tutorial/lab.

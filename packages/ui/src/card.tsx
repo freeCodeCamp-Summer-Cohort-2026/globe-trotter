@@ -1,30 +1,101 @@
-import { type ReactNode } from "react";
+import { type HTMLAttributes } from "react";
+import { cn } from "./lib/utils";
+
+export type CardPadding = "none" | "sm" | "md" | "lg";
+
+const paddingClasses: Record<CardPadding, string> = {
+  none: "",
+  sm: "ui:p-3",
+  md: "ui:p-5",
+  lg: "ui:p-6",
+};
+
+type CardProps = HTMLAttributes<HTMLDivElement> & {
+  padding?: CardPadding;
+};
+
+type CardPartProps = HTMLAttributes<HTMLDivElement> & {
+  padding?: CardPadding;
+  border?: boolean;
+};
 
 export function Card({
-  title,
+  padding = "none",
+  className,
   children,
-  href,
-}: {
-  title: string;
-  children: ReactNode;
-  href: string;
-}) {
+  ...props
+}: CardProps) {
   return (
-    <a
-      className="ui:group ui:rounded-lg ui:border ui:border-transparent ui:px-5 ui:py-4 ui:transition-colors hover:ui:border-neutral-700 hover:ui:bg-neutral-800/30"
-      href={`${href}?utm_source=create-turbo&utm_medium=with-tailwind&utm_campaign=create-turbo"`}
-      rel="noopener noreferrer"
-      target="_blank"
+    <div
+      className={cn(
+        "ui:rounded-2xl ui:border ui:border-slate-200 ui:bg-white ui:shadow-sm",
+        paddingClasses[padding],
+        className,
+      )}
+      {...props}
     >
-      <h2 className="ui:mb-3 ui:text-2xl ui:font-semibold">
-        {title}{" "}
-        <span className="ui:inline-block ui:transition-transform group-hover:ui:translate-x-1 motion-reduce:ui:transform-none">
-          -&gt;
-        </span>
-      </h2>
-      <p className="ui:m-0 ui:max-w-[30ch] ui:text-sm ui:opacity-50">
-        {children}
-      </p>
-    </a>
+      {children}
+    </div>
   );
 }
+
+export function CardHeader({
+  padding = "md",
+  border = false,
+  className,
+  children,
+  ...props
+}: CardPartProps) {
+  return (
+    <div
+      className={cn(
+        paddingClasses[padding],
+        border && "ui:border-b ui:border-slate-200",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function CardContent({
+  padding = "md",
+  className,
+  children,
+  ...props
+}: CardPartProps) {
+  return (
+    <div className={cn(paddingClasses[padding], className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+export function CardFooter({
+  padding = "md",
+  border = false,
+  className,
+  children,
+  ...props
+}: CardPartProps) {
+  return (
+    <div
+      className={cn(
+        paddingClasses[padding],
+        border && "ui:border-t ui:border-slate-200",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+export type { CardProps, CardPartProps };
+
+Card.Header = CardHeader;
+Card.Content = CardContent;
+Card.Footer = CardFooter;

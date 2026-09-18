@@ -6,6 +6,7 @@ packages:
   - "packages/config/typescript"
   - "packages/database"
   - "packages/ui"
+  - "packages/types"
 
 allowBuilds:
   "@parcel/watcher": true
