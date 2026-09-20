@@ -33,6 +33,8 @@ export const pool = new Pool({
 
 export const db = drizzle(pool, { schema });
 
+export type Db = typeof db;
+
 //? Close db should only run once - prevent multiple runs
 
 let isClosed = false;
