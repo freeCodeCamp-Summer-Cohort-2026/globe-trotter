@@ -33,4 +33,12 @@ export const pool = new Pool({
 
 export const db = drizzle(pool, { schema });
 
-export const closeDatabase = () => pool.end();
+//? Close db should only run once - prevent multiple runs
+
+let isClosed = false;
+
+export const closeDatabase = async () => {
+  if (isClosed) return;
+  isClosed = true;
+  await pool.end();
+}
