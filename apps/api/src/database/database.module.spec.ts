@@ -1,3 +1,8 @@
+jest.mock("@repo/database", () => ({
+  db: { __mock: true },
+  closeDatabase: jest.fn(),
+}));
+
 import { Test } from "@nestjs/testing";
 import { DatabaseModule, DRIZZLE } from "./database.module";
 
@@ -13,5 +18,6 @@ describe("DatabaseModule", () => {
 
     const db = module.get(DRIZZLE);
     expect(db).toBeDefined();
+    expect(db).toEqual({ __mock: true });
   });
 });
