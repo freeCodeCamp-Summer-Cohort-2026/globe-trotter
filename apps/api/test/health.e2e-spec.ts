@@ -1,6 +1,6 @@
 import { Test } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from '../src/app.module';
 import { it } from 'node:test';
@@ -21,7 +21,8 @@ describe('GET /health (e2e)', () => {
     await app.close();
   });
 
-  it('Returns status code 200 when the DB is reachable', () => {
-    return request(app.getHttpServer()).get('/health').expect(200);
+  it('Returns status code 200 when the DB is reachable', async () => {
+    const result = await request(app.getHttpServer()).get('/health');
+    expect(result).toBe(200);
   });
 });
