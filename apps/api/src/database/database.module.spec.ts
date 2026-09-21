@@ -1,6 +1,8 @@
 import { Test } from "@nestjs/testing";
 import { DatabaseModule, DRIZZLE } from "./database.module";
 
+//* Unit test for DatabaseModule
+
 // Idk types suck :D
 
 describe("DatabaseModule", () => {

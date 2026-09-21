@@ -1,9 +1,5 @@
-import dotenv from 'dotenv';
-
-dotenv.config({ path: '../../../.env' });
-
+import "./env";
 import { sql } from 'drizzle-orm';
-
 import { closeDatabase, db } from './client';
 
 async function main() {
