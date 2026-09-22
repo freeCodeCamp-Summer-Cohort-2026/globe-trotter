@@ -16,10 +16,13 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.7.5",
     "@nestjs/common": "^11.1.11",
     "@nestjs/core": "^11.1.11",
     "@nestjs/platform-express": "^11.1.11",
     "@repo/database": "workspace:*",
+    "@thallesp/nestjs-better-auth": "^2.8.0",
+    "better-auth": "^1.7.5",
     "dotenv": "^17.4.2",
     "escape-html": "^1.0.3",
     "reflect-metadata": "^0.2.2",
