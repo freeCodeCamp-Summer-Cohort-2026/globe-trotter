@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm';
 
 import {
+  text,
   check,
   index,
   pgEnum,
@@ -11,7 +12,7 @@ import {
   foreignKey
 } from 'drizzle-orm/pg-core';
 
-import { users } from './users';
+import { user } from './auth-schema';
 import { modules } from './modules';
 import { tutorials } from './tutorials';
 import { labs } from './labs';
@@ -28,9 +29,9 @@ export const userProgress = pgTable(
   {
     id: uuid('id').primaryKey().defaultRandom(),
 
-    userId: uuid('user_id')
+    userId: text('user_id')
       .notNull()
-      .references(() => users.id, {
+      .references(() => user.id, {
         onDelete: 'cascade',
       }),
 

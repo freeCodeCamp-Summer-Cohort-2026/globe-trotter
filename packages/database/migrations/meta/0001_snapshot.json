@@ -1,6 +1,6 @@
 {
-  "id": "106d6ed6-4481-482e-9859-818875959218",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "a8d23525-93be-4922-9588-1db72a4dc539",
+  "prevId": "106d6ed6-4481-482e-9859-818875959218",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -100,24 +100,24 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "account_user_id_user_id_fk": {
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -198,43 +198,43 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "labs_module_id_modules_id_fk": {
           "name": "labs_module_id_modules_id_fk",
           "tableFrom": "labs",
-          "tableTo": "modules",
           "columnsFrom": [
             "module_id"
           ],
+          "tableTo": "modules",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "labs_module_order_unique": {
           "name": "labs_module_order_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "module_id",
             "order_index"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "labs_id_module_unique": {
           "name": "labs_id_module_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "id",
             "module_id"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -306,15 +306,15 @@
         "modules_author_id_user_id_fk": {
           "name": "modules_author_id_user_id_fk",
           "tableFrom": "modules",
-          "tableTo": "user",
           "columnsFrom": [
             "author_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "set null",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "set null"
         }
       },
       "compositePrimaryKeys": {},
@@ -389,34 +389,34 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "session_token_unique": {
           "name": "session_token_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "token"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -495,43 +495,43 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "tutorials_module_id_modules_id_fk": {
           "name": "tutorials_module_id_modules_id_fk",
           "tableFrom": "tutorials",
-          "tableTo": "modules",
           "columnsFrom": [
             "module_id"
           ],
+          "tableTo": "modules",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "tutorials_module_order_unique": {
           "name": "tutorials_module_order_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "module_id",
             "order_index"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "tutorials_id_module_unique": {
           "name": "tutorials_id_module_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "id",
             "module_id"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -601,10 +601,10 @@
       "uniqueConstraints": {
         "user_email_unique": {
           "name": "user_email_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "email"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -678,9 +678,9 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         },
         "user_progress_module_id_idx": {
           "name": "user_progress_module_id_idx",
@@ -693,9 +693,9 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         },
         "user_progress_tutorial_id_idx": {
           "name": "user_progress_tutorial_id_idx",
@@ -708,9 +708,9 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         },
         "user_progress_lab_id_idx": {
           "name": "user_progress_lab_id_idx",
@@ -723,106 +723,106 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "user_progress_user_id_user_id_fk": {
           "name": "user_progress_user_id_user_id_fk",
           "tableFrom": "user_progress",
-          "tableTo": "user",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "user_progress_module_id_modules_id_fk": {
           "name": "user_progress_module_id_modules_id_fk",
           "tableFrom": "user_progress",
-          "tableTo": "modules",
           "columnsFrom": [
             "module_id"
           ],
+          "tableTo": "modules",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "user_progress_tutorial_id_tutorials_id_fk": {
           "name": "user_progress_tutorial_id_tutorials_id_fk",
           "tableFrom": "user_progress",
-          "tableTo": "tutorials",
           "columnsFrom": [
             "tutorial_id"
           ],
+          "tableTo": "tutorials",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "user_progress_lab_id_labs_id_fk": {
           "name": "user_progress_lab_id_labs_id_fk",
           "tableFrom": "user_progress",
-          "tableTo": "labs",
           "columnsFrom": [
             "lab_id"
           ],
+          "tableTo": "labs",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "user_progress_tutorial_module_fk": {
           "name": "user_progress_tutorial_module_fk",
           "tableFrom": "user_progress",
-          "tableTo": "tutorials",
           "columnsFrom": [
             "tutorial_id",
             "module_id"
           ],
+          "tableTo": "tutorials",
           "columnsTo": [
             "id",
             "module_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "user_progress_lab_module_fk": {
           "name": "user_progress_lab_module_fk",
           "tableFrom": "user_progress",
-          "tableTo": "labs",
           "columnsFrom": [
             "lab_id",
             "module_id"
           ],
+          "tableTo": "labs",
           "columnsTo": [
             "id",
             "module_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "user_progress_unique": {
           "name": "user_progress_unique",
-          "nullsNotDistinct": true,
           "columns": [
             "user_id",
             "module_id",
             "tutorial_id",
             "lab_id"
-          ]
+          ],
+          "nullsNotDistinct": true
         }
       },
       "policies": {},
@@ -893,9 +893,9 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         }
       },
       "foreignKeys": {},
@@ -919,10 +919,10 @@
     }
   },
   "schemas": {},
+  "views": {},
   "sequences": {},
   "roles": {},
   "policies": {},
-  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},
