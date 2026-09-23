@@ -32,3 +32,19 @@ export { Section, type SectionBackground, type SectionProps } from "./section";
 export { cn } from "./lib/utils";
 export { Gradient } from "./gradient";
 export { TurborepoLogo } from "./turborepo-logo";
+
+export { Header } from "./Header";
+export type {
+  HeaderProps,
+  HeaderUser,
+  HeaderVariant,
+} from "./Header";
+
+export { Footer } from "./Footer";
+export type { FooterProps } from "./Footer";
+
+export { ModuleTabs } from "./ModuleTabs";
+export type {
+  ModuleTabsProps,
+  TabItem,
+} from "./ModuleTabs";
