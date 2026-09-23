@@ -13,9 +13,9 @@ export interface FooterProps {
 };
 
 const FooterlinkItems: FooterLinkItem[] = [
-  {id: 1, label: "Privacy Policy", href:"/"},
-  {id: 2, label: "Terms of Service", href:"/"},
-  {id: 3, label: "Knowledge Base", href:"/"},
+    { id: 1, label: "Privacy Policy", href: "/" },
+    { id: 2, label: "Terms of Service", href: "/" },
+    { id: 3, label: "Knowledge Base", href: "/" },
 ];
 
 export const Footer = ({ linkItems = FooterlinkItems, renderLink }: FooterProps) => {
@@ -27,22 +27,22 @@ export const Footer = ({ linkItems = FooterlinkItems, renderLink }: FooterProps)
                     Copyright &copy;{currentYear} Globe Trotter. All rights reserved.
                 </p>
                 <NavigationMenu.Root>
-                    <NavigationMenu.List>
-                        <NavigationMenu.Item>
-                            {linkItems.map((linkItem) => {
+                    <NavigationMenu.List className="ui:flex ui:gap-4">
+                        {
+                            linkItems.map((linkItem) => {
                                 const linkChildren = (
+
                                     <span className="ui:pl-6 ui:py-2 ui:text-sm ui:text-[#8B8D98] ui:hover:text-[#60646C]">
                                         {linkItem.label}
                                     </span>
                                 );
                                 return (
-                                    <span key={linkItem.id} >
-                                        {renderLink(linkItem, linkChildren)}
-                                    </span>
+                                    <NavigationMenu.Item key={linkItem.id} >
+                                            {renderLink(linkItem, linkChildren)}
+                                    </NavigationMenu.Item>
                                 )
                             })
-                            }
-                        </NavigationMenu.Item>
+                        }
                     </NavigationMenu.List>
                 </NavigationMenu.Root>
             </div>
