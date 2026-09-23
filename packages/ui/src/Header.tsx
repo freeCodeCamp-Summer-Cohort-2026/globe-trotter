@@ -36,7 +36,7 @@ const HeaderLinkItems: HeaderLinkItem[] = [
 export const Header = ({ brandName = "Globe Trotter", linkItems = HeaderLinkItems, renderLink, variant = "learner", user = { name: "username" } }: HeaderProps) => {
     const brandChildren = (
         <div
-            className="ui:flex ui:items-center ui:gap-2 ui:font-semibold ui:text-[#113264] ui:hover:text-[#0D74CE] aria-label=`Globe Trotter Brand`"
+            className="ui:flex ui:items-center ui:gap-2 ui:font-semibold ui:text-[#113264] ui:hover:text-[#0D74CE]" aria-label="Globe Trotter Brand"
         >
             <Globe
                 className="ui:h-6 ui:w-6 ui:text-[#18794e] ui:hover:text-[#153226]"
