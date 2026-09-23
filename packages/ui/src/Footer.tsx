@@ -9,7 +9,7 @@ export interface FooterLinkItem {
 
 export interface FooterProps {
     linkItems?: FooterLinkItem[],
-    renderLink: (linkItem: FooterLinkItem, children: ReactNode) => ReactNode,
+    renderLink?: (linkItem: FooterLinkItem, children: ReactNode) => ReactNode,
 };
 
 const FooterlinkItems: FooterLinkItem[] = [
@@ -18,7 +18,7 @@ const FooterlinkItems: FooterLinkItem[] = [
     { id: 3, label: "Knowledge Base", href: "/" },
 ];
 
-export const Footer = ({ linkItems = FooterlinkItems, renderLink }: FooterProps) => {
+export const Footer = ({ linkItems = FooterlinkItems, renderLink = (linkItem, children) => <a href={linkItem.href}>{children}</a> }: FooterProps) => {
     const currentYear = new Date().getFullYear();
     return (
         <footer className="ui:w-full ui:border-t ui:border-slate-200 ui:bg-[#F9F9FB]">

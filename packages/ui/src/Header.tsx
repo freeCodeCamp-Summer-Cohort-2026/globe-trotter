@@ -25,7 +25,7 @@ export interface HeaderProps {
     linkItems?: HeaderLinkItem[],
     variant?: HeaderVariant,
     user?: HeaderUser,
-    renderLink: (linkItem: HeaderLinkItem, children: ReactNode) => ReactNode,
+    renderLink?: (linkItem: HeaderLinkItem, children: ReactNode) => ReactNode,
 };
 
 const HeaderLinkItems: HeaderLinkItem[] = [
@@ -33,7 +33,7 @@ const HeaderLinkItems: HeaderLinkItem[] = [
     { id: 2, label: "All Modules", href: "/" },
 ];
 
-export const Header = ({ brandName = "Globe Trotter", linkItems = HeaderLinkItems, renderLink, variant = "learner", user = { name: "username" } }: HeaderProps) => {
+export const Header = ({ brandName = "Globe Trotter", linkItems = HeaderLinkItems, variant = "learner", user = { name: "username" }, renderLink = (linkItem, children) => <a href={linkItem.href}>{children}</a> }: HeaderProps) => {
     const brandChildren = (
         <div
             className="ui:flex ui:items-center ui:gap-2 ui:font-semibold ui:text-[#113264] ui:hover:text-[#0D74CE]" aria-label="Globe Trotter Brand"
@@ -56,7 +56,7 @@ export const Header = ({ brandName = "Globe Trotter", linkItems = HeaderLinkItem
 
                     <div className="ui:flex ui:items-center ui:gap-6 ui:text-[#113264] ui:hover:text-[#0D74CE]">
                         {
-                            variant === "learner" &&
+                            (variant === "learner" || variant === "content-author") &&
                             linkItems.map((linkItem) => {
                                 const linkChildren = (
                                     <span className="ui:text-sm ui:font-medium ui:px-3 ui:py-2 ui:text-[#113264] ui:hover:text-[#0D74CE]">
