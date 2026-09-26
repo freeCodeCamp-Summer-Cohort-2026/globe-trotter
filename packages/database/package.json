@@ -10,9 +10,11 @@
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/seed.ts",
     "db:health": "tsx src/health.ts",
-    "test": "jest --passWithNoTests",
     "build": "tsc",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test": "NODE_ENV=test jest --runInBand",
+    "test:watch": "NODE_ENV=test jest --watch --runInBand",
+    "test:cov": "NODE_ENV=test jest --coverage --runInBand"
   },
   "dependencies": {
     "drizzle-orm": "^0.44.5",
@@ -20,6 +22,9 @@
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
+    "@swc/core": "^1.16.2",
+    "@swc/jest": "^0.2.39",
+    "@types/jest": "^30.0.0",
     "@types/node": "^26.4.1",
     "@types/pg": "^8.15.5",
     "dotenv": "^17.4.2",
