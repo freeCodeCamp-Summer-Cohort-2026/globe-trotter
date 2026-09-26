@@ -24,12 +24,27 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:4000:4000"
+    env_file:
+      - .env
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       PORT: 4000
     depends_on:
       postgres:
         condition: service_healthy
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+    environment:
+      - HOSTNAME=0.0.0.0
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
 
 volumes:
   postgres_data: 
