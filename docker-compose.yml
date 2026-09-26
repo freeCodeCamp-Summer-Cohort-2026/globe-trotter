@@ -24,6 +24,8 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:4000:4000"
+    env_file:
+      - .env
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       PORT: 4000
