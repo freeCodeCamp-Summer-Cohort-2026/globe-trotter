@@ -2,7 +2,7 @@
 # Base Stage: Setup pnpm
 # ==========================================
 FROM node:24-alpine AS base
-RUN corepack enable pnpm
+RUN corepack enable && corepack prepare pnpm@11.22.0 --activate
 
 # ==========================================
 # Pruner Stage: Extract only the needed packages

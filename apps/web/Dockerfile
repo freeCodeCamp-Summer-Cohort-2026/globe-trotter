@@ -6,7 +6,7 @@ RUN turbo prune web --docker
 
 FROM node:24-alpine AS installer
 RUN npm i -g turbo@2.10.12
-RUN corepack enable pnpm
+RUN corepack enable && corepack prepare pnpm@11.22.0 --activate
 WORKDIR /app
 COPY --from=pruner /app/out/json/ .
 RUN pnpm install --frozen-lockfile
