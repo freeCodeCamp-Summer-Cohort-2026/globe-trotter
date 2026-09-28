@@ -23,12 +23,12 @@ describe('Authentication and role based access (e2e)', () => {
   it.each(['/', '/profile', '/learner-dashboard', '/author-dashboard'])(
     'returns 401 for an unauthenticated request to %s',
     async (path) => {
-      await request(app.getHttpServer()).get(path).expect(401);
+      await request(app.getHttpServer() as App).get(path).expect(401);
     },
   );
 
   it('does not require authentication for an @AllowAnonymous() route', async () => {
-    const response = await request(app.getHttpServer()).get('/health');
+    const response = await request(app.getHttpServer() as App).get('/health');
 
     expect(response.status).not.toBe(401);
   });
