@@ -1,3 +1,10 @@
+// Mock the ESM-only package so Jest can load the controller in CJS mode.
+jest.mock('@thallesp/nestjs-better-auth', () => ({
+  Session: () => (_target: unknown, _key: string, descriptor: PropertyDescriptor) => descriptor,
+  UserSession: class {},
+}));
+
+
 import { ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
