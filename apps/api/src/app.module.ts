@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { DatabaseModule } from './database/database.module';
 import { HealthModule } from './health/health.module';
-import { AuthModule } from '@thallesp/nestjs-better-auth';
-import { auth } from "./lib/auth";
+import { RolesGuard } from './auth/roles.guard';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { auth } from './lib/auth';
 
 @Module({
-  imports: [
-    DatabaseModule,
-    HealthModule,
-    AuthModule.forRoot({ auth })
-  ]
+  imports: [DatabaseModule, HealthModule, AuthModule.forRoot({ auth })],
+  controllers: [AppController],
+  providers: [AppService, { provide: APP_GUARD, useClass: RolesGuard }],
 })
 export class AppModule {}
