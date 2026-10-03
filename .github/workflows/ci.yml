@@ -1,41 +1,40 @@
 name: CI
 
-on: 
+on:
   pull_request:
     branches:
-        - main
+      - main
   push:
     branches:
-        - main 
-        
-        
-jobs: 
-    ci: 
-        runs-on: ubuntu-latest
+      - main
 
-        steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
+jobs:
+  ci:
+    runs-on: ubuntu-latest
 
-        - name: Setup pnpm
-          uses: pnpm/action-setup@v6
-          with: 
-            version: 11.22.0
-          
-        - name: Setup Node.js
-          uses: actions/setup-node@v7
-          with: 
-            node-version: 24
-            cache: pnpm 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: Install dependancies
-          run: pnpm install --frozen-lockfile    
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11.22.0
 
-        - name: Build
-          run: pnpm build  
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.9.0
+          cache: pnpm
 
-        - name: Lint
-          run: pnpm lint  
+      - name: Install dependancies
+        run: pnpm install --frozen-lockfile
 
-        - name: Test
-          run: pnpm test  
+      - name: Build
+        run: pnpm build
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test

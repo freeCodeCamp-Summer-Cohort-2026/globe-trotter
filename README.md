@@ -14,7 +14,7 @@ Learners interact with a live map and other visual/spatial elements directly in 
 
 **Interactive map** - Maplibre GL JS, react-map-gl
 
-**Auth**: JWT
+**Auth**: Better Auth with email/password and Google OAuth
 
 **Tests**: Jest
 
@@ -38,13 +38,15 @@ Generate a secret for Better Auth and set it as `BETTER_AUTH_SECRET`:
 openssl rand -base64 32
 ```
 
-Set `BETTER_AUTH_URL` to `http://localhost:3000` for local development. Google OAuth is optional. To enable it, create OAuth 2.0 credentials in the [Google Cloud Console](https://console.cloud.google.com/apis/credentials), choose **Web application** as the application type, and set the authorized redirect URI to:
+Set `BETTER_AUTH_URL` to `http://localhost:3000` for local development. Create OAuth 2.0 credentials in the [Google Cloud Console](https://console.cloud.google.com/apis/credentials), choose **Web application** as the application type, and add this authorized redirect URI:
 
 ```text
 http://localhost:3000/api/auth/callback/google
 ```
 
 Copy the generated client ID and client secret into `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` in `.env`.
+
+Better Auth uses the same user record when a Google identity and an email/password identity have the same verified email address. This lets users who sign up with either method use both sign-in methods. A Google user can set a password through the authenticated Better Auth `setPassword` action.
 
 ### 2. Start PostgreSQL
 
