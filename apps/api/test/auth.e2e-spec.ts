@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { db } from '@repo/database';
+import { db, sql } from '@repo/database';
 import { AppModule } from '../src/app.module';
 
 describe('Authentication and role based access (e2e)', () => {
@@ -45,7 +45,7 @@ describe('Authentication and role based access (e2e)', () => {
       .send({ name: 'E2E Author', email: authorEmail, password });
     expect(signUpAuthor.status).toBeLessThan(400);
     await db.execute(
-      `update "user" set role = 'author' where email = '${authorEmail}'`,
+      sql`update "user" set role = 'author' where email = ${authorEmail}`,
     );
 
     // 3) SignIn for Learner and Author
@@ -63,7 +63,7 @@ describe('Authentication and role based access (e2e)', () => {
   });
 
   afterAll(async () => {
-    await db.execute(`delete from "user" where email like 'e2e-%'`);
+    await db.execute(sql`delete from "user" where email like ${'e2e-%'}`);
     await app.close();
   });
 
