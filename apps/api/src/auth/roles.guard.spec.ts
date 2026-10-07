@@ -2,17 +2,21 @@ import { ExecutionContext, ForbiddenException, UnauthorizedException } from '@ne
 import { Reflector } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import { ROLES_KEY } from './roles.decorator';
-import { RolesGuard } from './roles.guard';
+import { IS_PUBLIC_KEY, RolesGuard } from './roles.guard';
 
 describe('RolesGuard', () => {
   let guard: RolesGuard;
 
-  const createContext = (user: unknown, roles?: unknown[]) => {
+  const createContext = (user: unknown, roles?: unknown[], isAnonymous = false) => {
     const handler = () => undefined;
     const controller = class {};
 
     if (roles) {
       Reflect.defineMetadata(ROLES_KEY, roles, handler);
+    }
+
+    if (isAnonymous) {
+      Reflect.defineMetadata(IS_PUBLIC_KEY, true, handler);
     }
 
     return {
@@ -32,6 +36,14 @@ describe('RolesGuard', () => {
 
   it('allows the request when no @Roles metadata is present', () => {
     expect(guard.canActivate(createContext({ role: 'learner' }))).toBe(true);
+  });
+
+  it('throws 401 when no @Roles metadata is present and the user is null', () => {
+    expect(() => guard.canActivate(createContext(null))).toThrow(UnauthorizedException);
+  });
+
+  it('allows an @AllowAnonymous() route without a user', () => {
+    expect(guard.canActivate(createContext(null, undefined, true))).toBe(true);
   });
 
   it('throws 401 when the request is not authenticated', () => {

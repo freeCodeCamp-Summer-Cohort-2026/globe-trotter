@@ -23,8 +23,21 @@ export class AppController {
   }
 
   @Get('profile')
+  @Roles('learner', 'author')
   getProfile(@Session() session: UserSession<typeof auth>): SessionDto {
     return toSessionDto(session);
+  }
+
+  @Get('all-modules')
+  @Roles('learner', 'author')
+  getAllModules(): string {
+    return this.appService.getHello();
+  }
+
+  @Get('my-modules')
+  @Roles('author')
+  getMyModules(): string {
+    return this.appService.getHello();
   }
 
   @Get()
