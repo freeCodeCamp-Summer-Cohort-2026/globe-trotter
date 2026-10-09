@@ -5,14 +5,16 @@ import { App } from 'supertest/types';
 import { db, sql } from '@repo/database';
 import { AppModule } from '../src/app.module';
 
+// TODO: Temporary e2e test users. Relocate to a shared constants file in a later PR.
+const e2eTestUsers = ['e2e-learner@example.com', 'e2e-author@example.com'];
+
 describe('Authentication and role based access (e2e)', () => {
   let app: INestApplication<App>;
   let learnerAgent: ReturnType<typeof request.agent>;
   let authorAgent: ReturnType<typeof request.agent>;
 
   const password = 'Password123!';
-  let learnerEmail: string;
-  let authorEmail: string;
+  const [learnerEmail, authorEmail] = e2eTestUsers;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -21,10 +23,6 @@ describe('Authentication and role based access (e2e)', () => {
 
     app = moduleRef.createNestApplication({ bodyParser: false });
     await app.init();
-
-    const stamp = Date.now();
-    learnerEmail = `e2e-learner-${stamp}@example.com`;
-    authorEmail = `e2e-author-${stamp}@example.com`;
 
     // agent = stores cookies automatically ( for session )
     learnerAgent = request.agent(app.getHttpServer() as App);
@@ -63,7 +61,7 @@ describe('Authentication and role based access (e2e)', () => {
   });
 
   afterAll(async () => {
-    await db.execute(sql`delete from "user" where email like ${'e2e-%'}`);
+    await db.execute(sql`delete from "user" where email in ${e2eTestUsers}`);
     await app.close();
   });
 
@@ -74,11 +72,14 @@ describe('Authentication and role based access (e2e)', () => {
     '/author-dashboard',
     '/all-modules',
     '/my-modules',
-  ])('returns 401 for an unauthenticated request to %s', async (path) => {
-    await request(app.getHttpServer() as App)
-      .get(path)
-      .expect(401);
-  });
+  ])(
+    'returns 401 for an unauthenticated request to %s',
+    async (path: string) => {
+      await request(app.getHttpServer() as App)
+        .get(path)
+        .expect(401);
+    },
+  );
 
   it('does not require authentication for an @AllowAnonymous() route', async () => {
     const response = await request(app.getHttpServer() as App).get('/health');
