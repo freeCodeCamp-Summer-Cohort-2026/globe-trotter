@@ -1,18 +1,23 @@
-import { ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { ExecutionContext, ForbiddenException, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
+import IS_PUBLIC_KEY from '@thallesp/nestjs-better-auth';
 import { ROLES_KEY } from './roles.decorator';
 import { RolesGuard } from './roles.guard';
 
 describe('RolesGuard', () => {
   let guard: RolesGuard;
 
-  const createContext = (user: unknown, roles?: unknown[]) => {
+  const createContext = (user: unknown, roles?: unknown[], isAnonymous = false) => {
     const handler = () => undefined;
     const controller = class {};
 
     if (roles) {
       Reflect.defineMetadata(ROLES_KEY, roles, handler);
+    }
+
+    if (isAnonymous) {
+      Reflect.defineMetadata(IS_PUBLIC_KEY, true, handler);
     }
 
     return {
@@ -34,12 +39,18 @@ describe('RolesGuard', () => {
     expect(guard.canActivate(createContext({ role: 'learner' }))).toBe(true);
   });
 
-  it('allows a public route when there is no user', () => {
-    expect(guard.canActivate(createContext(null))).toBe(true);
+  it('throws 401 when no @Roles metadata is present and the user is null', () => {
+    expect(() => guard.canActivate(createContext(null))).toThrow(UnauthorizedException);
   });
 
-  it('lets an unauthenticated request fall through to AuthGuard', () => {
-    expect(guard.canActivate(createContext(null, ['learner']))).toBe(true);
+  it('allows an @AllowAnonymous() route without a user', () => {
+    expect(guard.canActivate(createContext(null, undefined, true))).toBe(true);
+  });
+
+  it('throws 401 when the request is not authenticated', () => {
+    expect(() => guard.canActivate(createContext(null, ['learner']))).toThrow(
+      UnauthorizedException,
+    );
   });
 
   it('allows a learner to reach a learner route', () => {

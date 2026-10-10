@@ -3,8 +3,10 @@ import {
   ExecutionContext,
   ForbiddenException,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import IS_PUBLIC_KEY from '@thallesp/nestjs-better-auth';
 import { ROLES_KEY } from './roles.decorator';
 import { UserRole, isUserRole } from './user-role';
 
@@ -23,10 +25,18 @@ export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
+    const isAnonymous = this.reflector.getAllAndOverride<boolean>(
+      IS_PUBLIC_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+    if (isAnonymous) {
+      return true;
+    }
+
     const { user } = context.switchToHttp().getRequest<RequestWithUser>();
 
     if (!user) {
-      return true;
+      throw new UnauthorizedException('User is not authorized');
     }
 
     const requiredRoles = this.reflector.getAllAndOverride<UserRole[]>(
