@@ -1,7 +1,6 @@
 import { betterAuth } from "better-auth/minimal";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { db } from "@repo/database";
-import { validatePassword } from "./validatePassword";
 
 const secret = process.env.BETTER_AUTH_SECRET;
 if (!secret) {
@@ -17,9 +16,6 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     minPasswordLength: 8,
-    password: {
-      verify: validatePassword,
-    },
   },
   secret,
   database: drizzleAdapter(db, {
