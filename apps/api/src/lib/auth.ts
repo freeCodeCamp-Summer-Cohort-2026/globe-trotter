@@ -15,14 +15,19 @@ if (!url) {
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
     autoSignIn: false,
     minPasswordLength: 8,
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
       // For now this is just a stub. When implemented, do not await sending the email to prevent timing attacks.
-      console.log("Verification email sent");
-    }
+      console.log(`[auth] Verification email for ${user.email}: ${url}`);
+      console.log(`[auth] Token: ${token}`);
+    },
+    sendOnSignUp: true,
+    sendOnSignIn: true,
+    autoSignInAfterVerification: true,
   },
   secret,
   database: drizzleAdapter(db, {
@@ -34,5 +39,8 @@ export const auth = betterAuth({
     },
   },
   // Can add app URL here once deployed
-  trustedOrigins: ["http://localhost:3000"]
+  trustedOrigins: [
+    "http://localhost:3000",
+    "http://localhost:4000"
+  ]
 });

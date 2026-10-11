@@ -9,6 +9,6 @@ async function bootstrap(): Promise<void> {
   });
   app.enableCors();
   app.enableShutdownHooks();
-  await app.listen(process.env.PORT ?? 8000);
+  await app.listen(process.env.PORT ?? 4000);
 }
 bootstrap();
