@@ -22,7 +22,7 @@ The authoring interface enables content creators to build and manage modules, tu
 - "Save Module" button persists changes via `POST /modules` or `PUT /modules/:id`.
 
 **Technical Implementation:**
-- React client component with form state management (Zod for validation, React Hook Form and/or Zustand?).
+- React client component with form state management (Zod for validation, React Hook Form).
 - Drag-and-drop using `dnd-kit`, `react-beautiful-dnd` or another appropriate library.
 - API calls to NestJS endpoints:
   - `POST /modules` → Create module.
