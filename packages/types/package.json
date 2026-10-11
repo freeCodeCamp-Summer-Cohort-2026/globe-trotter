@@ -6,7 +6,9 @@
   "scripts": {
     "check-types": "tsc --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "zod": "^4.6.5"
+  },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "typescript": "7.0.2"
