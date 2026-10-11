@@ -15,7 +15,14 @@ if (!url) {
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
+    autoSignIn: false,
     minPasswordLength: 8,
+  },
+  emailVerification: {
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+      // For now this is just a stub. When implemented, do not await sending the email to prevent timing attacks.
+      console.log("Verification email sent");
+    }
   },
   secret,
   database: drizzleAdapter(db, {
