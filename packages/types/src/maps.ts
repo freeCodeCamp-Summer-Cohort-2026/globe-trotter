@@ -22,7 +22,6 @@ type WorldPhysicalConfig = {
 
 type SatelliteConfig = {
   cameraAngle: number;
-  tilt: number;
   pitch: number;
 };
 

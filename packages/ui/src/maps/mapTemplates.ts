@@ -24,6 +24,8 @@ const worldPhysicalStyle: StyleSpecification = {
   sources: {
     "physical-relief": {
       type: "raster",
+      // Usage policy is free but only for low traffic - not to be used as the
+      // project scales.
       tiles: [
         "https://a.tile.opentopomap.org/{z}/{x}/{y}.png",
         "https://b.tile.opentopomap.org/{z}/{x}/{y}.png",
@@ -45,9 +47,12 @@ const worldPhysicalStyle: StyleSpecification = {
 
 const satelliteStyle: StyleSpecification = {
   version: 8,
+  projection: { type: "globe" },
   sources: {
     satellite: {
       type: "raster",
+      // Keyless endpoint, but World Imagery is covered by the Esri Master
+      // License Agreement - confirm those terms before any production use.
       tiles: [
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
       ],
@@ -115,11 +120,11 @@ const satellite3d: MapTemplateDefinition<"satellite-3d"> = {
   defaultViewState: {
     longitude: 0,
     latitude: 20,
-    zoom: 2,
+    zoom: 1.6,
     bearing: 0,
-    pitch: 45,
+    pitch: 0,
   },
-  defaultConfig: { cameraAngle: 0, tilt: 45, pitch: 45 },
+  defaultConfig: { cameraAngle: 0, pitch: 0 },
   layerToggles: {},
 };
 
