@@ -1,5 +1,5 @@
 import { Controller, Get, Inject, ServiceUnavailableException } from "@nestjs/common";
-import { Db } from "@repo/database";
+import type { Db } from "@repo/database";
 import { DRIZZLE } from "src/database/database.module";
 
 // Move Db type to @repo/database as a type export
