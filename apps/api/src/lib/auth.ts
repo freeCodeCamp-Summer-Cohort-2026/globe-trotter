@@ -44,6 +44,7 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
+      //TODO: implement real email service before production deployment
       // For now this is just a stub. When implemented, do not await sending the email to prevent timing attacks.
       if (process.env.NODE_ENV !== "test") {
         throw new Error("sendVerificationEmail is not implemented for non-test environments");
