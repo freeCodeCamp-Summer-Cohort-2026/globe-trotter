@@ -1,15 +1,22 @@
 // Mock the ESM-only package so Jest can load the controller in CJS mode.
-jest.mock('@thallesp/nestjs-better-auth', () => ({
-  Session: () => (_target: unknown, _key: string, descriptor: PropertyDescriptor) => descriptor,
-  UserSession: class {},
-}));
+// reflect-metadata must be loaded here (inside the hoisted mock factory) so that
+// Reflect.defineMetadata is available before @nestjs/common decorators execute.
+jest.mock('@thallesp/nestjs-better-auth', () => {
+  require('reflect-metadata');
+  const { SetMetadata } = require('@nestjs/common');
+  return {
+    Roles: (roles: string[]) => SetMetadata('ROLES', roles),
+    Session: () => (_target: unknown, _key: string, descriptor: PropertyDescriptor) => descriptor,
+    UserSession: class {},
+    AllowAnonymous: () => SetMetadata('PUBLIC', true),
+  };
+});
 
 
 import { ForbiddenException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ROLES_KEY } from './auth/roles.decorator';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -32,14 +39,14 @@ describe('AppController', () => {
   describe('role metadata', () => {
     it('marks the learner dashboard for learners and authors', () => {
       const roles = Reflect.getMetadata(
-        ROLES_KEY,
+        'ROLES',
         AppController.prototype.getStudentDashboardData,
       );
       expect(roles).toEqual(['learner', 'author']);
     });
 
     it('marks the author dashboard for authors only', () => {
-      const roles = Reflect.getMetadata(ROLES_KEY, AppController.prototype.getAuthorDashboardData);
+      const roles = Reflect.getMetadata('ROLES', AppController.prototype.getAuthorDashboardData);
       expect(roles).toEqual(['author']);
     });
   });
