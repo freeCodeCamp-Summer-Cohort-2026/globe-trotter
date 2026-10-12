@@ -25,10 +25,9 @@ export const auth = betterAuth({
 
       const result = passwordSchema.safeParse(password);
       if (!result.success) {
-        const issue = result.error.issues[0];
-        let msg: string | undefined = issue?.message;
+        let msg = result.error.issues[0]?.message;
         
-        if (typeof issue === "undefined") {
+        if (typeof result.error.issues[0]?.message === "undefined") {
           msg = "Issue is undefined - no error message available";
         }
 
@@ -42,11 +41,11 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
     autoSignIn: false,
-    minPasswordLength: 8,
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }, request) => {
       // For now this is just a stub. When implemented, do not await sending the email to prevent timing attacks.
+      if (process.env.NODE_ENV !== "test") return;
       console.log(`[auth] Verification email for ${user.email}: ${url}`);
       console.log(`[auth] Token: ${token}`);
     },
@@ -64,8 +63,5 @@ export const auth = betterAuth({
     },
   },
   // Can add app URL here once deployed
-  trustedOrigins: [
-    "http://localhost:3000",
-    "http://localhost:4000"
-  ]
+  trustedOrigins: ["http://localhost:3000"]
 });
