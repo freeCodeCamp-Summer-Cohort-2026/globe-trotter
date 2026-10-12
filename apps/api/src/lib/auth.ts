@@ -1,6 +1,8 @@
 import { betterAuth } from "better-auth/minimal";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { db } from "@repo/database";
+import { APIError, createAuthMiddleware } from "better-auth/api";
+import { passwordSchema } from "@repo/types";
 
 const secret = process.env.BETTER_AUTH_SECRET;
 if (!secret) {
@@ -13,6 +15,29 @@ if (!url) {
 };
 
 export const auth = betterAuth({
+  /* Custom middleware hook needed because Better Auth bypasses the regular NestJS validation pipeline */
+  hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      if (ctx.path !== "/sign-up/email" && ctx.path !== "/reset-password") return;
+
+      const password = ctx.body?.password;
+      if (typeof password !== "string") return;
+
+      const result = passwordSchema.safeParse(password);
+      if (!result.success) {
+        const issue = result.error.issues[0];
+        let msg: string | undefined = issue?.message;
+        
+        if (typeof issue === "undefined") {
+          msg = "Issue is undefined - no error message available";
+        }
+
+        throw new APIError("BAD_REQUEST", {
+          message: msg,
+        });
+      }
+    }),
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
