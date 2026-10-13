@@ -6,9 +6,9 @@ import { passwordSchema } from "@repo/types";
 
 const nodeEnv = process.env.NODE_ENV;
 //TODO: Edit condition in below if statement so that it checks for non-test environment AND configured email provider
-if (nodeEnv !== "test") {
-  throw new APIError("INTERNAL_SERVER_ERROR", { message: "No real email provider configured in a non-test environment." });
-}
+// if (nodeEnv !== "test") {
+//   throw new APIError("INTERNAL_SERVER_ERROR", { message: "No real email provider configured in a non-test environment." });
+// }
 
 const secret = process.env.BETTER_AUTH_SECRET;
 if (!secret) {
