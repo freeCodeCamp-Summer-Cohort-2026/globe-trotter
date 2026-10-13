@@ -6,13 +6,15 @@ import { passwordSchema } from "@repo/types";
 
 const secret = process.env.BETTER_AUTH_SECRET;
 if (!secret) {
-  throw new Error("BETTER_AUTH_SECRET environment variable is required. The value can be generated using the bash cmd 'openssl rand -base64 32'.");
-};
+  throw new Error(
+    "BETTER_AUTH_SECRET environment variable is required. The value can be generated using the bash cmd 'openssl rand -base64 32'.",
+  );
+}
 
-const url = process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+const url = process.env.BETTER_AUTH_URL;
 if (!url) {
-  throw new Error("BETTER_AUTH_URL environment variable is required. The value can be generated using the bash cmd 'openssl rand -base64 32'.");
-};
+  throw new Error('BETTER_AUTH_URL environment variable is required.');
+}
 
 export const auth = betterAuth({
   /* Custom middleware hook needed because Better Auth bypasses the regular NestJS validation pipeline */
@@ -58,12 +60,15 @@ export const auth = betterAuth({
   },
   secret,
   database: drizzleAdapter(db, {
-    provider: "pg",
+    provider: 'pg',
   }),
   user: {
     additionalFields: {
-      role: { type: "string", defaultValue: "learner", input: false },
+      role: { type: 'string', defaultValue: 'learner', input: false },
     },
+  },
+  emailAndPassword: {
+    enabled: true,
   },
   // Can add app URL here once deployed
   trustedOrigins: [

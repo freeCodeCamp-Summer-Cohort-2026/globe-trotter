@@ -11,6 +11,7 @@ The authoring interface enables content creators to build and manage modules, tu
 - "Create Module" button navigates to `/author/modules/new` (or similar).
 
 **Technical Implementation:**
+
 - React Server Component (Next.js) with client-side interactivity for delete/edit actions.
 - Uses `@repo/ui` components for cards, badges, and buttons.
 
@@ -40,6 +41,7 @@ The authoring interface enables content creators to build and manage modules, tu
 - "Save Tutorial" button persists via `POST /tutorials` or `PUT /tutorials/:id`.
 
 **Technical Implementation:**
+
 - WYSIWYG editor using TipTap.
 - Map preview using `react-map-gl` with selected template.
 - Map interaction insertion via custom toolbar button that inserts JSON blocks into the editor content.
@@ -56,6 +58,7 @@ The authoring interface enables content creators to build and manage modules, tu
 - "Save Lab" button persists via `POST /labs` or `PUT /labs/:id`.
 
 **Technical Implementation:**
+
 - Dynamic form builder for goals (add/remove goals, conditional fields based on `type`).
 - Goals stored as JSON conforming to the lab's `goals` schema.
 - API endpoints:
@@ -75,6 +78,7 @@ The student-facing interface provides a seamless learning journey through module
 - Link to `/catalog` for module browsing.
 
 **Technical Implementation:**
+
 - Next.js Server Component (static gen or SSR).
 
 ### 2.2 Module Catalog Page
@@ -84,6 +88,7 @@ The student-facing interface provides a seamless learning journey through module
 - "Start Module" button navigates to `/modules/:id`.
 
 **Technical Implementation:**
+
 - Next.js Server Component with `fetch` or `react-query` for data fetching.
 - Uses `@repo/ui` components for cards and buttons.
 
@@ -95,6 +100,7 @@ The student-facing interface provides a seamless learning journey through module
 - Status determined by `user_progress` table.
 
 **Technical Implementation:**
+
 - Next.js Server Component with client-side interactivity for status updates.
 - Progress status fetched from `GET /user-progress?moduleId=:id`.
 - "Start" button navigates to `/tutorials/:id` or `/labs/:id`.
@@ -106,6 +112,7 @@ The student-facing interface provides a seamless learning journey through module
 - "Mark as Complete" button updates `user_progress` via `POST /user-progress`.
 
 **Technical Implementation:**
+
 - Renders `content` JSON from the tutorial.
 - Map interactions rendered using `react-map-gl` and interaction components.
 - API endpoints:
@@ -123,6 +130,7 @@ The student-facing interface provides a seamless learning journey through module
 - Attempt counter (if `allowedAttempts` is set).
 
 **Technical Implementation:**
+
 - Submission payload: `{ labId, answers: { goalId: value } }`.
 - Evaluation logic in NestJS:
   - `region_selection`: Check if clicked country ID matches expected.
@@ -142,13 +150,14 @@ The map system provides reusable templates and interaction components for tutori
 
 ### 3.1 Map Templates (MVP)
 
-| Template | Implementation | Configurable |
-| :--- | :--- | :--- |
-| **World Political Map (2D)** | MapLibre GL JS with `https://demotiles.maplibre.org/style.json` | `showBorders`, `showLabels`, `showCapitals` |
-| **World Physical Map (2D)** | MapLibre GL JS with physical geography style | `showElevation`, `showRivers`, `showLabels` |
-| **Satellite View (3D Globe)** | MapLibre GL JS with terrain/raster satellite tiles | `cameraAngle`, `tilt`, `pitch` |
+| Template                      | Implementation                                                  | Configurable                                |
+| :---------------------------- | :-------------------------------------------------------------- | :------------------------------------------ |
+| **World Political Map (2D)**  | MapLibre GL JS with `https://demotiles.maplibre.org/style.json` | `showBorders`, `showLabels`, `showCapitals` |
+| **World Physical Map (2D)**   | MapLibre GL JS with physical geography style                    | `showElevation`, `showRivers`, `showLabels` |
+| **Satellite View (3D Globe)** | MapLibre GL JS with terrain/raster satellite tiles              | `cameraAngle`, `pitch`                      |
 
 **Technical Implementation:**
+
 - Each template is a React component wrapping `react-map-gl`.
 - Templates accept `initialState` prop (zoom, center, layers).
 - Dynamic imports with `ssr: false` to prevent SSR issues?
@@ -156,15 +165,16 @@ The map system provides reusable templates and interaction components for tutori
 
 ### 3.2 Map Interaction Components
 
-| Component | Purpose |
-| :--- | :--- |
-| `RegionSelection` | Click on a country/region |
-| `PathDrawing` | Draw a polyline on the map |
-| `PolygonDrawing` | Draw a shape on the map |
-| `MapZoom` | Programmatically zoom to coordinates |
-| `MapHighlight` | Highlight a region or point |
+| Component         | Purpose                              |
+| :---------------- | :----------------------------------- |
+| `RegionSelection` | Click on a country/region            |
+| `PathDrawing`     | Draw a polyline on the map           |
+| `PolygonDrawing`  | Draw a shape on the map              |
+| `MapZoom`         | Programmatically zoom to coordinates |
+| `MapHighlight`    | Highlight a region or point          |
 
 **Technical Implementation:**
+
 - Built using `react-map-gl` and `mapbox-gl-draw` (or custom drawing logic) + maybe `react-map-gl-draw` for the Editor component.
 - Shared interaction state using Zustand or React Context.
 - Interaction data stored in lab `goals.expected` for validation.
@@ -181,41 +191,41 @@ The map system provides reusable templates and interaction components for tutori
 
 ### Module Endpoints
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/modules` | List all modules (filter by `published` query param) |
-| `GET` | `/modules/:id` | Get module details + tutorials/labs |
-| `POST` | `/modules` | Create a new module |
-| `PUT` | `/modules/:id` | Update module details |
-| `DELETE` | `/modules/:id` | Delete module |
-| `PUT` | `/modules/:id/order` | Update tutorial/lab order |
+| Method   | Endpoint             | Description                                          |
+| :------- | :------------------- | :--------------------------------------------------- |
+| `GET`    | `/modules`           | List all modules (filter by `published` query param) |
+| `GET`    | `/modules/:id`       | Get module details + tutorials/labs                  |
+| `POST`   | `/modules`           | Create a new module                                  |
+| `PUT`    | `/modules/:id`       | Update module details                                |
+| `DELETE` | `/modules/:id`       | Delete module                                        |
+| `PUT`    | `/modules/:id/order` | Update tutorial/lab order                            |
 
 ### Tutorial Endpoints
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/tutorials/:id` | Get tutorial content |
-| `POST` | `/tutorials` | Create a new tutorial |
-| `PUT` | `/tutorials/:id` | Update tutorial |
-| `DELETE` | `/tutorials/:id` | Delete tutorial |
+| Method   | Endpoint         | Description           |
+| :------- | :--------------- | :-------------------- |
+| `GET`    | `/tutorials/:id` | Get tutorial content  |
+| `POST`   | `/tutorials`     | Create a new tutorial |
+| `PUT`    | `/tutorials/:id` | Update tutorial       |
+| `DELETE` | `/tutorials/:id` | Delete tutorial       |
 
 ### Lab Endpoints
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/labs/:id` | Get lab details |
-| `POST` | `/labs` | Create a new lab |
-| `PUT` | `/labs/:id` | Update lab |
-| `DELETE` | `/labs/:id` | Delete lab |
-| `POST` | `/labs/:id/submit` | Submit lab and evaluate goals |
+| Method   | Endpoint           | Description                   |
+| :------- | :----------------- | :---------------------------- |
+| `GET`    | `/labs/:id`        | Get lab details               |
+| `POST`   | `/labs`            | Create a new lab              |
+| `PUT`    | `/labs/:id`        | Update lab                    |
+| `DELETE` | `/labs/:id`        | Delete lab                    |
+| `POST`   | `/labs/:id/submit` | Submit lab and evaluate goals |
 
 ### Progress Endpoints
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/user-progress` | Get progress for a user (filter by `moduleId`, `tutorialId`, `labId`) |
-| `POST` | `/user-progress` | Create or update progress |
-| `GET` | `/user-progress/module/:moduleId` | Get all progress for a module |
+| Method | Endpoint                          | Description                                                           |
+| :----- | :-------------------------------- | :-------------------------------------------------------------------- |
+| `GET`  | `/user-progress`                  | Get progress for a user (filter by `moduleId`, `tutorialId`, `labId`) |
+| `POST` | `/user-progress`                  | Create or update progress                                             |
+| `GET`  | `/user-progress/module/:moduleId` | Get all progress for a module                                         |
 
 ---
 
@@ -223,11 +233,11 @@ The map system provides reusable templates and interaction components for tutori
 
 ### On the simplification suggestions
 
-**Refresh token rotation** :  agreed, that's not needed for MVP. "Issue refresh token, store hashed, invalidate on logout" is enough to start. Rotation + reuse detection is a good post-MVP hardening step once we have real traffic to justify the complexity.
+**Refresh token rotation** : agreed, that's not needed for MVP. "Issue refresh token, store hashed, invalidate on logout" is enough to start. Rotation + reuse detection is a good post-MVP hardening step once we have real traffic to justify the complexity.
 
-**CSRF**  : since it's not much extra work, I'll keep it in. Better to have it from day one than retrofit it later once more routes depend on cookie auth.
+**CSRF** : since it's not much extra work, I'll keep it in. Better to have it from day one than retrofit it later once more routes depend on cookie auth.
 
-**Rate limiting** :  in-memory is fine for MVP. No need for database-backed tracking until we're running multiple server instances and need the limit to be shared across them.
+**Rate limiting** : in-memory is fine for MVP. No need for database-backed tracking until we're running multiple server instances and need the limit to be shared across them.
 
 ### About other questions
 
@@ -243,17 +253,17 @@ I think we should build email + password login into the MVP, not just Google and
 
 The core shape stays the same : JWT-style tokens, HTTP-only cookies, hashed refresh token storage, rate-limited login. The main difference is that Better Auth would own the implementation of most of that instead of us hand-rolling it, and we'd add Google as a second, equally-supported login path from day one rather than the only path.
 
-### 5.1 Core Components 
+### 5.1 Core Components
 
-| Component | Details |
-| :--- | :--- |
-| Credentials | Email (unique) + password, via Better Auth |
-| Password storage | Handled by Better Auth (bcrypt/argon2 under the hood) |
-| Social login | Google, via Better Auth, alongside credentials from day one |
-| User roles | `learner` \| `author`, stored on the user record |
-| Access token | Short-lived, HTTP-only cookie |
-| Refresh token | Longer-lived, HTTP-only cookie; hash stored server-side so it can be invalidated on logout |
-| Session model | Managed by Better Auth; no manual rotation/reuse-detection logic needed for MVP |
+| Component        | Details                                                                                    |
+| :--------------- | :----------------------------------------------------------------------------------------- |
+| Credentials      | Email (unique) + password, via Better Auth                                                 |
+| Password storage | Handled by Better Auth (bcrypt/argon2 under the hood)                                      |
+| Social login     | Google, via Better Auth, alongside credentials from day one                                |
+| User roles       | `learner` \| `author`, stored on the user record                                           |
+| Access token     | Short-lived, HTTP-only cookie                                                              |
+| Refresh token    | Longer-lived, HTTP-only cookie; hash stored server-side so it can be invalidated on logout |
+| Session model    | Managed by Better Auth; no manual rotation/reuse-detection logic needed for MVP            |
 
 ### 5.2 Chosen Method: Better Auth (JWT + HTTP-only cookies under the hood)
 
@@ -281,16 +291,17 @@ Same reasoning as before for JWT + cookies - stateless where possible, HTTP-only
 
 The database is managed by Drizzle ORM in `packages/database`.
 
-| Table | Purpose |
-| :--- | :--- |
-| `users` | Authentication and user identity |
-| `modules` | Top-level content containers |
-| `tutorials` | Teaching content with embedded map interactions |
-| `labs` | Standalone tasks with goals and hints |
+| Table           | Purpose                                                  |
+| :-------------- | :------------------------------------------------------- |
+| `users`         | Authentication and user identity                         |
+| `modules`       | Top-level content containers                             |
+| `tutorials`     | Teaching content with embedded map interactions          |
+| `labs`          | Standalone tasks with goals and hints                    |
 | `user_progress` | Tracks user progress across modules, tutorials, and labs |
-| `refreshTokens` | Stores refresh tokens that are currently in use |
+| `refreshTokens` | Stores refresh tokens that are currently in use          |
 
 **Key Constraints:**
+
 - `UNIQUE (email)` on `users`.
 - `UNIQUE (moduleId, orderIndex)` on `tutorials` and `labs`.
 - `UNIQUE (userId, moduleId, tutorialId, labId)` on `user_progress`.
@@ -305,7 +316,11 @@ The database is managed by Drizzle ORM in `packages/database`.
 - Background error logging.
 - API error responses follow standard format:
   ```json
-  { "statusCode": 404, "message": "Module not found", "timestamp": "2024-01-01T00:00:00Z" }
+  {
+    "statusCode": 404,
+    "message": "Module not found",
+    "timestamp": "2024-01-01T00:00:00Z"
+  }
   ```
 
 ---
