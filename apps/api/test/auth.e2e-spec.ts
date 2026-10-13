@@ -2,7 +2,7 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { db, sql } from '@repo/database';
+import { db, sql, inArray } from '@repo/database';
 import { AppModule } from '../src/app.module';
 import { user as userTable } from '@repo/database/src/schema';
 
