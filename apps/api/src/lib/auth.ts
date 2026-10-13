@@ -66,5 +66,7 @@ export const auth = betterAuth({
     },
   },
   // Can add app URL here once deployed
-  trustedOrigins: ["http://localhost:3000"]
+  trustedOrigins: [
+    process.env.WEB_URL
+  ].filter(str => typeof str !== "undefined")
 });
