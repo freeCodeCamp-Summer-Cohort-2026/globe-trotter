@@ -67,9 +67,6 @@ export const auth = betterAuth({
       role: { type: 'string', defaultValue: 'learner', input: false },
     },
   },
-  emailAndPassword: {
-    enabled: true,
-  },
   // Can add app URL here once deployed
   trustedOrigins: [
     process.env.WEB_URL
