@@ -9,11 +9,9 @@ if (!secret) {
   );
 }
 
-const url = process.env.BETTER_AUTH_URL ?? 'http://localhost:3000';
+const url = process.env.BETTER_AUTH_URL;
 if (!url) {
-  throw new Error(
-    "BETTER_AUTH_URL environment variable is required. The value can be generated using the bash cmd 'openssl rand -base64 32'.",
-  );
+  throw new Error('BETTER_AUTH_URL environment variable is required.');
 }
 
 export const auth = betterAuth({
