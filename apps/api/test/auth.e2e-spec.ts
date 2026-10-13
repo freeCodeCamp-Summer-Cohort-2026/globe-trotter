@@ -62,8 +62,16 @@ describe('Authentication and role based access (e2e)', () => {
   });
 
   afterAll(async () => {
-    await db.delete(userTable).where(inArray(userTable.email, e2eTestUsers))
-    await app.close();
+    try {
+      await db.delete(userTable).where(inArray(userTable.email, e2eTestUsers));
+    } catch (err) {
+      console.error('Failed to clean up e2e test users:', err);
+    }
+    try {
+      await app.close();
+    } catch (err) {
+      console.error('App failed to close:', err);
+    }
   });
 
   it.each([
