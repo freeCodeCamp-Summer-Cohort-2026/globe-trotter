@@ -19,14 +19,13 @@ if (!secret) {
 
 const url = process.env.BETTER_AUTH_URL;
 if (!url) {
-  throw new Error('BETTER_AUTH_URL environment variable is required.');
+  throw new Error("BETTER_AUTH_URL environment variable is required.");
 }
 
-const trustedOriginsInit = [
-  process.env.WEB_URL
-].filter(str => typeof str !== "undefined");
-
-const trustedOrigins = trustedOriginsInit.length === 0 ? ["http://localhost:3000"] : trustedOriginsInit;
+const webURL = process.env.WEB_URL
+if (!webURL) {
+  throw new Error("WEB_URL environment variable is required.");
+}
 
 export const auth = betterAuth({
   /* Custom middleware hook needed because Better Auth bypasses the regular NestJS validation pipeline */
@@ -80,5 +79,5 @@ export const auth = betterAuth({
     },
   },
   // Can add app URL here once deployed
-  trustedOrigins
+  trustedOrigins: [webURL]
 });
