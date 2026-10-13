@@ -61,7 +61,7 @@ describe('Authentication and role based access (e2e)', () => {
   });
 
   afterAll(async () => {
-    await db.execute(sql`delete from "user" where email in ${e2eTestUsers}`);
+    await db.execute(sql`delete from "user" where email in (${e2eTestUsers.map(user => `'${user}'`).join(", ")})`);
     await app.close();
   });
 
