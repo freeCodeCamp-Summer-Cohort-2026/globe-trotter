@@ -4,6 +4,12 @@ import { db } from "@repo/database";
 import { APIError, createAuthMiddleware } from "better-auth/api";
 import { passwordSchema } from "@repo/types";
 
+const nodeEnv = process.env.NODE_ENV;
+//TODO: Edit condition in below if statement so that it checks for non-test environment AND configured email provider
+if (nodeEnv !== "test") {
+  throw new APIError("INTERNAL_SERVER_ERROR", { message: "No real email provider configured in a non-test environment." });
+}
+
 const secret = process.env.BETTER_AUTH_SECRET;
 if (!secret) {
   throw new Error(
@@ -15,6 +21,12 @@ const url = process.env.BETTER_AUTH_URL;
 if (!url) {
   throw new Error('BETTER_AUTH_URL environment variable is required.');
 }
+
+const trustedOriginsInit = [
+  process.env.WEB_URL
+].filter(str => typeof str !== "undefined");
+
+const trustedOrigins = trustedOriginsInit.length === 0 ? ["http://localhost:3000"] : trustedOriginsInit;
 
 export const auth = betterAuth({
   /* Custom middleware hook needed because Better Auth bypasses the regular NestJS validation pipeline */
@@ -49,7 +61,7 @@ export const auth = betterAuth({
       //TODO: implement real email service before production deployment
       // For now this is just a stub. When implemented, do not await sending the email to prevent timing attacks.
       if (process.env.NODE_ENV !== "test") {
-        throw new Error("sendVerificationEmail is not implemented for non-test environments");
+        throw new APIError('INTERNAL_SERVER_ERROR', { message: 'Email service not configured' });
       }
       console.log(`[auth] Verification email for ${user.email}: ${url}`);
       console.log(`[auth] Token: ${token}`);
@@ -68,7 +80,5 @@ export const auth = betterAuth({
     },
   },
   // Can add app URL here once deployed
-  trustedOrigins: [
-    process.env.WEB_URL
-  ].filter(str => typeof str !== "undefined")
+  trustedOrigins
 });
