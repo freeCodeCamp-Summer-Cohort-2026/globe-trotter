@@ -4,6 +4,7 @@ import request from 'supertest';
 import { App } from 'supertest/types';
 import { db, sql } from '@repo/database';
 import { AppModule } from '../src/app.module';
+import { user as userTable } from '@repo/database/src/schema';
 
 // TODO: Temporary e2e test users. Relocate to a shared constants file in a later PR.
 const e2eTestUsers = ['e2e-learner@example.com', 'e2e-author@example.com'];
