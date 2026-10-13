@@ -1,16 +1,26 @@
 # Secrets and env files
 .env
 .env.*
+!.env.example
 *.pem
 
 # Git
 .git
+.github
 .gitignore
 
 # Node modules and builds
 node_modules
+**/node_modules
 .next
+**/.next
+.turbo
+**/.turbo
 dist
+**/dist
 out
 coverage
 build
+
+# Logs
+*.log
