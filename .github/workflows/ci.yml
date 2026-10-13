@@ -52,6 +52,9 @@ jobs:
               -U globe-trotter \
               -d postgres \
               -c "CREATE DATABASE globe_trotter_migration_test;"
+        
+        - name: Build types
+          run: pnpm --filter types build
 
         - name: Build
           run: pnpm build  
