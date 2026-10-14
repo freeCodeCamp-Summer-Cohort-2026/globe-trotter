@@ -14,9 +14,9 @@ Learners interact with a live map and other visual/spatial elements directly in 
 
 **Interactive map** - Maplibre GL JS, react-map-gl
 
-**Auth**: JWT
+**Auth**: Better Auth
 
-**Tests**: Jest
+**Tests**: Jest + Playwright
 
 ## How to get started
 
@@ -30,6 +30,13 @@ Copy the example file:
 
 ```bash
 cp .env.example .env
+```
+
+Create the databases for local testing:
+
+```bash
+docker compose exec postgres psql -U globe-trotter -d postgres -c "CREATE DATABASE globe_trotter_test;"
+docker compose exec postgres psql -U globe-trotter -d postgres -c "CREATE DATABASE globe_trotter_migration_test;"
 ```
 
 Generate a secret for Better Auth and set it as `BETTER_AUTH_SECRET`:
@@ -80,6 +87,22 @@ pnpm db:migrate
 ```
 
 > **Note:** Seeding is not yet wired up (tracked separately). Once available, it will be runnable with `pnpm db:seed` from `/packages/database`.
+
+### 5. Running the API
+
+If you want to run the API without the frontend, run:
+
+```bash
+pnpm --filter api dev
+```
+
+Then split the terminal and run the following in the new terminal:
+
+```bash
+pnpm --filter @repo/types dev
+```
+
+> **Note:** The API is run this way due to `@repo/types` now being a built package.
 
 ## File Structure
 
