@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @import "@repo/tailwind-config";
 
+@font-face {
+  font-family: 'Avenir';
+  src: url('/fonts/AvenirNextCyr-Heavy.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-avenir: 'Avenir', sans-serif;
+}
+
 @layer base {
   body {
     font-family: var(--font-inter);
