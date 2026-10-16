@@ -1,83 +1,58 @@
 import { betterAuth } from "better-auth/minimal";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { db } from "@repo/database";
-import { APIError, createAuthMiddleware } from "better-auth/api";
-import { passwordSchema } from "@repo/types";
-
-const nodeEnv = process.env.NODE_ENV;
-//TODO: Edit condition in below if statement so that it checks for non-test environment AND configured email provider
-// if (nodeEnv !== "test") {
-//   throw new APIError("INTERNAL_SERVER_ERROR", { message: "No real email provider configured in a non-test environment." });
-// }
 
 const secret = process.env.BETTER_AUTH_SECRET;
 if (!secret) {
-  throw new Error(
-    "BETTER_AUTH_SECRET environment variable is required. The value can be generated using the bash cmd 'openssl rand -base64 32'.",
-  );
-}
+  throw new Error("BETTER_AUTH_SECRET environment variable is required. The value can be generated using the bash cmd 'openssl rand -base64 32'.");
+};
 
 const url = process.env.BETTER_AUTH_URL;
 if (!url) {
   throw new Error("BETTER_AUTH_URL environment variable is required.");
 }
 
-const webURL = process.env.WEB_URL
+const webURL = process.env.WEB_URL;
 if (!webURL) {
   throw new Error("WEB_URL environment variable is required.");
 }
 
 export const auth = betterAuth({
-  /* Custom middleware hook needed because Better Auth bypasses the regular NestJS validation pipeline */
-  hooks: {
-    before: createAuthMiddleware(async (ctx) => {
-      if (ctx.path !== "/sign-up/email" && ctx.path !== "/reset-password") return;
+  secret,
+  baseURL: url,
 
-      const password = ctx.body?.password;
-      if (typeof password !== "string") return;
+  database: drizzleAdapter(db, {
+    provider: "pg",
+  }),
 
-      const result = passwordSchema.safeParse(password);
-      if (!result.success) {
-        let msg = result.error.issues[0]?.message;
-        
-        if (typeof result.error.issues[0]?.message === "undefined") {
-          msg = "Issue is undefined - no error message available";
-        }
-
-        throw new APIError("BAD_REQUEST", {
-          message: msg,
-        });
-      }
-    }),
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // Refresh after 1 day
   },
+
+  advanced: {
+    defaultCookieAttributes: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    },
+  },
+
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
     autoSignIn: false,
   },
+
   emailVerification: {
-    sendVerificationEmail: async ({ user, url, token }, request) => {
-      //TODO: implement real email service before production deployment
-      // For now this is just a stub. When implemented, do not await sending the email to prevent timing attacks.
-      if (process.env.NODE_ENV !== "test") {
-        throw new APIError('INTERNAL_SERVER_ERROR', { message: 'Email service not configured' });
-      }
-      console.log(`[auth] Verification email for ${user.email}: ${url}`);
-      console.log(`[auth] Token: ${token}`);
-    },
     sendOnSignUp: true,
-    sendOnSignIn: true,
-    autoSignInAfterVerification: true,
   },
-  secret,
-  database: drizzleAdapter(db, {
-    provider: 'pg',
-  }),
+
   user: {
     additionalFields: {
-      role: { type: 'string', defaultValue: 'learner', input: false },
+      role: { type: "string", defaultValue: "learner", input: false },
     },
   },
-  // Can add app URL here once deployed
-  trustedOrigins: [webURL]
+
+  trustedOrigins: [webURL],
 });
