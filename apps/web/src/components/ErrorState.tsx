@@ -21,9 +21,9 @@ export default function ErrorState({
     <>
       <div className="h-screen flex flex-col w-full">
         <Header />
-        <main className="h-[calc(100svh-148px)] flex-1 flex flex-col items-center justify-center w-full max-w-3xl mx-auto text-center ">
+        <main className="h-svh flex-1 flex flex-col w-full max-w-3xl mx-auto text-center ">
           {/* Hero Section */}
-          <div className="w-full h-6/12 flex justify-center mb-8">
+          <div className="w-full max-h-80 flex justify-center mb-4">
             {heroGraphic}
           </div>
           {/* Typography Section */}
@@ -35,6 +35,9 @@ export default function ErrorState({
               <p className="text-base md:text-lg text-gray-600 max-w-lg mx-auto ">
                 {description}
               </p>
+            )}
+            {digest && (
+              <p className="text-xs text-gray-400">Error ID: {digest}</p>
             )}
           </div>
           {/* Action Section */}

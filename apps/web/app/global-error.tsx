@@ -4,9 +4,21 @@ import ActionLink from "@/components/ActionLink";
 import GoBackButton from "@/components/BackButton";
 import ErrorState from "@/components/ErrorState";
 import RefreshButton from "@/components/RefreshButton";
+import { logError } from "@/lib/log-error";
 import Image from "next/image";
+import { useEffect } from "react";
 
-export default function globalError() {
+export default function GlobalError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    logError(error);
+  }, [error]);
+
   return (
     <>
       <html>
@@ -14,6 +26,7 @@ export default function globalError() {
           <ErrorState
             title="Can't reach the server !"
             description="Check your connection and try again."
+            digest={error.digest}
             heroGraphic={
               <div className="flex flex-col items-center justify-center w-full gap-6 text-center">
                 <h1 className="text-[clamp(1rem,5vw,2.5rem)] font-extrabold font-[Avenir] tracking-wide ">
@@ -33,7 +46,7 @@ export default function globalError() {
               </div>
             }
             primaryAction={
-              <> 
+              <>
                 <RefreshButton />
                 <GoBackButton />
               </>
