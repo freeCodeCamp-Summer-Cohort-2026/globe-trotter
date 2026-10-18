@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
-export default function GoBackButton() {
+export default function BackButton() {
   const router = useRouter();
   return (
     <Button
@@ -16,7 +16,7 @@ export default function GoBackButton() {
         alt="refresh now"
         width={50}
         height={50}
-        className="w-7 h-7"
+        className="size-7"
       />{" "}
       Go Back
     </Button>

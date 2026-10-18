@@ -19,20 +19,20 @@ export default function ErrorState({
 }: ErrorStateProps) {
   return (
     <>
-      <div className="h-screen flex flex-col w-full">
+      <div className="flex flex-col w-full h-screen">
         <Header />
-        <main className="h-svh flex-1 flex flex-col w-full max-w-3xl mx-auto text-center ">
+        <main className="flex flex-col flex-1 w-full max-w-3xl h-svh mx-auto text-center">
           {/* Hero Section */}
-          <div className="w-full max-h-80 flex justify-center mb-4">
+          <div className="flex justify-center w-full max-h-80 mb-4">
             {heroGraphic}
           </div>
           {/* Typography Section */}
-          <div className="flex flex-col gap-4 font-inter w-full ">
-            <h1 className="text-3xl md:text-4xl font-inter font-normal text-gray-900 ">
+          <div className="flex flex-col w-full gap-4 font-inter">
+            <h1 className="font-normal font-inter text-3xl text-gray-900 md:text-4xl">
               {title}
             </h1>
             {description && (
-              <p className="text-base md:text-lg text-gray-600 max-w-lg mx-auto ">
+              <p className="mx-auto max-w-lg text-base text-gray-600 md:text-lg">
                 {description}
               </p>
             )}
@@ -41,8 +41,8 @@ export default function ErrorState({
             )}
           </div>
           {/* Action Section */}
-          <div className="w-full flex flex-col items-center gap-6 font-inter">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 w-full">
+          <div className="flex flex-col items-center w-full gap-6 font-inter">
+            <div className="flex flex-col items-center justify-center w-full gap-8 sm:flex-row">
               {primaryAction}
             </div>
             {secondaryAction}

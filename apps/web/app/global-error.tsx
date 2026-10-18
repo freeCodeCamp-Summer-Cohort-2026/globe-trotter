@@ -1,7 +1,7 @@
 "use client";
 
 import ActionLink from "@/components/ActionLink";
-import GoBackButton from "@/components/BackButton";
+import BackButton from "@/components/BackButton";
 import ErrorState from "@/components/ErrorState";
 import RefreshButton from "@/components/RefreshButton";
 import { logError } from "@/lib/log-error";
@@ -20,7 +20,6 @@ export default function GlobalError({
   }, [error]);
 
   return (
-    <>
       <html>
         <body>
           <ErrorState
@@ -40,7 +39,7 @@ export default function GlobalError({
                   alt="Network Error"
                   width={400}
                   height={400}
-                  className="w-3/4 h-3/4 object-contain"
+                  className="size-3/4 object-contain"
                   priority
                 />
               </div>
@@ -48,13 +47,12 @@ export default function GlobalError({
             primaryAction={
               <>
                 <RefreshButton reset={reset}/>
-                <GoBackButton />
+                <BackButton />
               </>
             }
             secondaryAction={<ActionLink />}
           />
         </body>
       </html>
-    </>
   );
 }

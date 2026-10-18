@@ -19,31 +19,29 @@ export default function Error({
     logError(error);
   }, [error]);
   return (
-    <>
       <ErrorState
         title="Something went wrong !"
         description="An unexpected error occurred on our end. We're looking into it."
         digest={error.digest}
         heroGraphic={
-          <div className="flex flex-col items-center justify-center w-full gap text-center ">
+          <div className="flex flex-col items-center justify-center w-full text-center">
             <Image
               src="/illustrations/500.svg"
               alt="500 - Internal Server Error"
               width={400}
               height={400}
-              className="w-4/5 h-4/5 object-contain"
+              className="size-4/5 object-contain"
               priority
             />
           </div>
         }
         primaryAction={
           <>
-            <RefreshButton reset={reset}/>
+            <RefreshButton reset={reset} />
             <GoBackButton />
           </>
         }
         secondaryAction={<ActionLink />}
       />
-    </>
   );
 }
