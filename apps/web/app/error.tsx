@@ -38,7 +38,7 @@ export default function Error({
         }
         primaryAction={
           <>
-            <RefreshButton />
+            <RefreshButton reset={reset}/>
             <GoBackButton />
           </>
         }

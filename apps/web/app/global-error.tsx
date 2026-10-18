@@ -47,7 +47,7 @@ export default function GlobalError({
             }
             primaryAction={
               <>
-                <RefreshButton />
+                <RefreshButton reset={reset}/>
                 <GoBackButton />
               </>
             }

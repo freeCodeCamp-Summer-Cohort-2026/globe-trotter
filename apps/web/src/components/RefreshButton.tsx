@@ -3,10 +3,13 @@
 import { Button } from "@repo/ui";
 import Image from "next/image";
 
-export default function RefreshButton() {
+export default function RefreshButton({ reset }: { reset?: () => void }) {
   return (
     <Button
-      onClick={() => window.location.reload()}
+      onClick={() => {
+        if (reset) reset();
+        else window.location.reload();
+      }}
       className="font-normal min-w-8 border border-black"
     >
       <Image
