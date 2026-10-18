@@ -7,7 +7,7 @@ export default function RefreshButton() {
   return (
     <Button
       onClick={() => window.location.reload()}
-      className="font-normal min-w-8 border-1 border-black"
+      className="font-normal min-w-8 border border-black"
     >
       <Image
         src="/illustrations/refresher.svg"
