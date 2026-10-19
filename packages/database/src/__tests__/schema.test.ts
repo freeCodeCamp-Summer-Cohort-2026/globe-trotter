@@ -47,6 +47,8 @@ describe('Database schemas', () => {
     expect(tutorials).toHaveProperty('orderIndex');
     expect(tutorials).toHaveProperty('createdAt');
     expect(tutorials).toHaveProperty('updatedAt');
+    expect(tutorials).toHaveProperty('estimatedDuration');
+    expect(tutorials).toHaveProperty('isPublished');
   });
 
   it('labs should have expected fields', () => {
@@ -54,10 +56,12 @@ describe('Database schemas', () => {
     expect(labs).toHaveProperty('moduleId');
     expect(labs).toHaveProperty('title');
     expect(labs).toHaveProperty('description');
-    expect(labs).toHaveProperty('content');
     expect(labs).toHaveProperty('orderIndex');
     expect(labs).toHaveProperty('createdAt');
     expect(labs).toHaveProperty('updatedAt');
+    expect(labs).toHaveProperty('goals');
+    expect(labs).toHaveProperty('isPublished');
+    expect(labs).toHaveProperty('allowedAttempts');
   });
 
   it('userProgress should have expected fields', () => {
