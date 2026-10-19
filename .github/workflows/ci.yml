@@ -6,26 +6,26 @@ on:
       - main
   push:
     branches:
-        - main 
+      - main 
         
         
 jobs:
-    ci:
-        runs-on: ubuntu-latest
-        services:
-          postgres:
-            image: postgres:16
-            env:
-              POSTGRES_USER: globe-trotter
-              POSTGRES_PASSWORD: globetrotter123
-              POSTGRES_DB: globe_trotter_test
-            ports:
-              - 5432:5432
-            options: >-
-              --health-cmd pg_isready
-              --health-interval 10s
-              --health-timeout 5s
-              --health-retries 5
+  ci:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: globe-trotter
+          POSTGRES_PASSWORD: globetrotter123
+          POSTGRES_DB: globe_trotter_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout repository
