@@ -51,8 +51,8 @@ export const userProgress = pgTable(
 
     status: userProgressStatusEnum('status').notNull(),
 
-    createdAt: timestamp('created_at').notNull(),
-    updatedAt: timestamp('updated_at').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
   (table) => [
     unique('user_progress_unique')

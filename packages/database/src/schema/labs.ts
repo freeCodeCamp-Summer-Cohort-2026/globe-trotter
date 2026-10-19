@@ -29,8 +29,8 @@ export const labs = pgTable(
     allowedAttempts: integer('allowed_attempts'),
     orderIndex: integer('order_index').notNull(),
     isPublished: boolean('is_published').notNull().default(false),
-    createdAt: timestamp('created_at').notNull(),
-    updatedAt: timestamp('updated_at').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
   (table) => [
     unique('labs_module_order_unique').on(
