@@ -11,9 +11,9 @@ export default function NotFound() {
         title="Page not found !"
         description="We couldn't find the page you were looking for. It may have moved or no longer exists."
         heroGraphic={
-          <div className="flex flex-col items-center justify-center w-full gap-4 text-center">
-            <div className="flex flex-col justify-center h-2/6 align-middle">
-              <h1 className="text-2xl font-extrabold font-[Avenir] tracking-wide md:text-4xl lg:text-4xl">
+          <div className="flex w-full flex-col items-center justify-center gap-4 text-center">
+            <div className="flex h-2/6 flex-col justify-center align-middle">
+              <h1 className="font-[Avenir] text-2xl font-extrabold tracking-wide md:text-4xl lg:text-4xl">
                 404 <br /> Oops!
               </h1>
             </div>

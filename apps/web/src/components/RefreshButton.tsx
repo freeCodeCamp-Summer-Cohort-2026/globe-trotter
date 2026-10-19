@@ -7,7 +7,7 @@ export default function RefreshButton({ reset }: { reset: () => void }) {
   return (
     <Button
       onClick={() => reset()}
-      className="font-normal min-w-8 border border-black"
+      className="min-w-8 border border-black font-normal"
     >
       <Image
         src="/illustrations/refresher.svg"

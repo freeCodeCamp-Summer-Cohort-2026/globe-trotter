@@ -24,7 +24,7 @@ export default function Error({
         description="An unexpected error occurred on our end. We're looking into it."
         digest={error.digest}
         heroGraphic={
-          <div className="flex flex-col items-center justify-center w-full text-center">
+          <div className="flex w-full flex-col items-center justify-center text-center">
             <Image
               src="/illustrations/500.svg"
               alt="500 - Internal Server Error"

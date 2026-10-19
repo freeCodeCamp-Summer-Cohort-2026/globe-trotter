@@ -19,16 +19,16 @@ export default function ErrorState({
 }: ErrorStateProps) {
   return (
     <>
-      <div className="flex flex-col w-full h-screen">
+      <div className="flex h-screen w-full flex-col">
         <Header />
-        <main className="flex flex-col flex-1 w-full max-w-3xl h-svh mx-auto text-center">
+        <main className="mx-auto flex h-svh w-full max-w-3xl flex-1 flex-col text-center">
           {/* Hero Section */}
-          <div className="flex justify-center w-full max-h-80 mb-4">
+          <div className="mb-4 flex max-h-80 w-full justify-center">
             {heroGraphic}
           </div>
           {/* Typography Section */}
-          <div className="flex flex-col w-full gap-4 font-inter">
-            <h1 className="font-normal font-inter text-3xl text-gray-900 md:text-4xl">
+          <div className="flex w-full flex-col gap-4 font-inter">
+            <h1 className="font-inter text-3xl font-normal text-gray-900 md:text-4xl">
               {title}
             </h1>
             {description && (
@@ -41,8 +41,8 @@ export default function ErrorState({
             )}
           </div>
           {/* Action Section */}
-          <div className="flex flex-col items-center w-full gap-6 font-inter">
-            <div className="flex flex-col items-center justify-center w-full gap-8 sm:flex-row">
+          <div className="flex w-full flex-col items-center gap-6 font-inter">
+            <div className="flex w-full flex-col items-center justify-center gap-8 sm:flex-row">
               {primaryAction}
             </div>
             {secondaryAction}

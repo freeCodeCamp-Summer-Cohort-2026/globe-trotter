@@ -8,7 +8,7 @@ export default function HomeButton() {
   return (
     <Button
       onClick={() => router.push("/")}
-      className="font-normal min-w-8 border border-black"
+      className="min-w-8 border border-black font-normal"
     >
       Home
     </Button>

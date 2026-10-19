@@ -9,7 +9,7 @@ export default function BackButton() {
   return (
     <Button
       onClick={() => router.back()}
-      className="bg-white min-w-24 text-black border border-black font-normal"
+      className="min-w-24 border border-black bg-white font-normal text-black"
     >
       <Image
         src="/illustrations/arrow-left.svg"

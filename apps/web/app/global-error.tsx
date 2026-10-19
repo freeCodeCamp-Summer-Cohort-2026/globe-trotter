@@ -27,8 +27,8 @@ export default function GlobalError({
             description="Check your connection and try again."
             digest={error.digest}
             heroGraphic={
-              <div className="flex flex-col items-center justify-center w-full gap-6 text-center">
-                <h1 className="text-[clamp(1rem,5vw,2.5rem)] font-extrabold font-[Avenir] tracking-wide ">
+              <div className="flex w-full flex-col items-center justify-center gap-6 text-center">
+                <h1 className="font-[Avenir] text-[clamp(1rem,5vw,2.5rem)] font-extrabold tracking-wide ">
                   Oops! <br />{" "}
                   <span className="font-[Newsreader] font-normal text-red-800">
                     Network Error!
