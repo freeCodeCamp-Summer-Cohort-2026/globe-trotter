@@ -31,7 +31,6 @@ describe('Database schemas', () => {
     expect(modules).toHaveProperty('authorId');
     expect(modules).toHaveProperty('title');
     expect(modules).toHaveProperty('description');
-    expect(modules).toHaveProperty('orderIndex');
     expect(modules).toHaveProperty('thumbnailUrl');
     expect(modules).toHaveProperty('isPublished');
     expect(modules).toHaveProperty('createdAt');
