@@ -24,7 +24,7 @@ export const labs = pgTable(
       }),
 
     title: text('title').notNull(),
-    description: text('description').notNull(),
+    description: text('description'),
     goals: jsonb('goals').notNull().default([]),
     allowedAttempts: integer('allowed_attempts'),
     orderIndex: integer('order_index').notNull(),

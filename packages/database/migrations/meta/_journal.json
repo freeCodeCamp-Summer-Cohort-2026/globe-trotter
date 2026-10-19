@@ -22,6 +22,13 @@
       "when": 1792444332366,
       "tag": "0002_glossy_lockjaw",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792446508559,
+      "tag": "0003_melted_riptide",
+      "breakpoints": true
     }
   ]
 }

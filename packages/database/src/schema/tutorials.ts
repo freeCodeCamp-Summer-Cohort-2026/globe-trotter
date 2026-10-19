@@ -23,7 +23,7 @@ export const tutorials = pgTable(
       }),
 
     title: text('title').notNull(),
-    description: text('description').notNull(),
+    description: text('description'),
     content: text('content').notNull(),
     estimatedDuration: integer('estimated_duration'),
     orderIndex: integer('order_index').notNull(),
