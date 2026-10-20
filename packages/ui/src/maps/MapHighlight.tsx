@@ -14,7 +14,7 @@ const POINT_SOURCE_ID = "map-highlight-point";
 const POINT_LAYER_ID = "map-highlight-point-circle";
 
 export type MapHighlightProps = {
-  /** Country or point to highlight. Renders nothing when unset. */
+  /** Country or point to highlight. Nothing renders when unset. */
   value?: MapHighlightValue | null;
   color?: string;
   fillOpacity?: number;
@@ -31,7 +31,9 @@ export function MapHighlight({
   // Shared, cached boundaries — used only for the country variant.
   const { data } = useCountryBoundaries();
 
-  // Single-point FeatureCollection (always defined so hooks stay unconditional).
+  // Empty string matches no feature, so unset/point values highlight nothing.
+  const countryIso = value?.type === "country" ? value.iso_a2 : "";
+
   const pointData = useMemo<FeatureCollection>(() => {
     if (value?.type !== "point") {
       return { type: "FeatureCollection", features: [] };
@@ -48,11 +50,34 @@ export function MapHighlight({
     };
   }, [value]);
 
-  // Read-only: no user input, nothing to render without a value.
-  if (!value) return null;
-
-  if (value.type === "point") {
-    return (
+  // Both sources stay mounted with stable ids: swapping a <Source>'s id between
+  // renders makes react-map-gl throw "source id changed". Visibility comes from
+  // the data and the layer filters instead.
+  return (
+    <>
+      <Source id={COUNTRY_SOURCE_ID} type="geojson" data={data}>
+        {/* Matches either ISO field, mirroring RegionSelection's fallback. */}
+        <Layer
+          id={COUNTRY_FILL_LAYER_ID}
+          type="fill"
+          filter={[
+            "any",
+            ["==", ["get", "ISO_A2_EH"], countryIso],
+            ["==", ["get", "ISO_A2"], countryIso],
+          ]}
+          paint={{ "fill-color": color, "fill-opacity": fillOpacity }}
+        />
+        <Layer
+          id={COUNTRY_OUTLINE_LAYER_ID}
+          type="line"
+          filter={[
+            "any",
+            ["==", ["get", "ISO_A2_EH"], countryIso],
+            ["==", ["get", "ISO_A2"], countryIso],
+          ]}
+          paint={{ "line-color": color, "line-width": 2 }}
+        />
+      </Source>
       <Source id={POINT_SOURCE_ID} type="geojson" data={pointData}>
         <Layer
           id={POINT_LAYER_ID}
@@ -66,33 +91,7 @@ export function MapHighlight({
           }}
         />
       </Source>
-    );
-  }
-
-  return (
-    <Source id={COUNTRY_SOURCE_ID} type="geojson" data={data}>
-      {/* Matches the ISO field and mirrors RegionSelection's fallback. */}
-      <Layer
-        id={COUNTRY_FILL_LAYER_ID}
-        type="fill"
-        filter={[
-          "any",
-          ["==", ["get", "ISO_A2_EH"], value.iso_a2],
-          ["==", ["get", "ISO_A2"], value.iso_a2],
-        ]}
-        paint={{ "fill-color": color, "fill-opacity": fillOpacity }}
-      />
-      <Layer
-        id={COUNTRY_OUTLINE_LAYER_ID}
-        type="line"
-        filter={[
-          "any",
-          ["==", ["get", "ISO_A2_EH"], value.iso_a2],
-          ["==", ["get", "ISO_A2"], value.iso_a2],
-        ]}
-        paint={{ "line-color": color, "line-width": 2 }}
-      />
-    </Source>
+    </>
   );
 }
 
