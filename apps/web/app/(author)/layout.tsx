@@ -1,6 +1,6 @@
 import { Header, Container } from "@repo/ui";
 import { headers } from "next/headers";
-import type { Session } from "@repo/types";
+import { sessionSchema, type Session } from "@repo/types";
 import { redirect } from "next/navigation";
 
 async function getSession(): Promise<Session> {
@@ -19,7 +19,11 @@ async function getSession(): Promise<Session> {
 
     if (!response.ok) throw new Error(`Session fetch failed with status: ${response.status}`); 
     
-    return response.json();
+    const session = await response.json();
+
+    const validatedSessionShape: Session = sessionSchema.parse(session);
+
+    return validatedSessionShape;
   } catch (err) {
     //? Network errors, non-2xx responses and JSON parse failures are re-thrown as a generic error so that the error boundary
     //? can surface them. An unauthenticated user gets a 200 response with a null body, which returns from the try block before
