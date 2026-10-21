@@ -24,6 +24,7 @@ async function getSession(): Promise<Session> {
     //? Network errors, non-2xx responses and JSON parse failures are re-thrown as a generic error so that the error boundary
     //? can surface them. An unauthenticated user gets a 200 response with a null body, which returns from the try block before
     //? reaching this catch block - that case is handled by the guard statements in AuthorLayout.
+    console.error(`Network error: ${err}`);
     throw new Error("Could not verify your session. Please refresh the page or try again shortly.", { cause: err });
   }
 }
@@ -31,6 +32,9 @@ async function getSession(): Promise<Session> {
 export default async function AuthorLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
 
+  //! Might need to validate session with zod schema
+
+  // This only runs if the user is trying to navigate to an author-specific route, so doesn't trigger when on Home page e.g.
   if (!session?.user) {
     redirect("/login?redirect=/author/modules");
   }
