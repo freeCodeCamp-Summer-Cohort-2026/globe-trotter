@@ -11,6 +11,8 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@next/env": "^16.4.2",
+    "@repo/types": "workspace:*",
     "@repo/ui": "workspace:*",
     "better-auth": "^1.7.5",
     "geist": "1.7.2",

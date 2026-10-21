@@ -15,6 +15,27 @@
       "when": 1790105157777,
       "tag": "0001_add_user_role_check",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792444332366,
+      "tag": "0002_glossy_lockjaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792446508559,
+      "tag": "0003_melted_riptide",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792447731314,
+      "tag": "0004_grey_wind_dancer",
+      "breakpoints": true
     }
   ]
 }

@@ -9,6 +9,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 import { modules } from './modules';
+import { boolean } from 'drizzle-orm/pg-core';
 
 export const tutorials = pgTable(
   'tutorials',
@@ -22,11 +23,13 @@ export const tutorials = pgTable(
       }),
 
     title: text('title').notNull(),
-    description: text('description').notNull(),
+    description: text('description'),
     content: text('content').notNull(),
+    estimatedDuration: integer('estimated_duration'),
     orderIndex: integer('order_index').notNull(),
-    createdAt: timestamp('created_at').notNull(),
-    updatedAt: timestamp('updated_at').notNull(),
+    isPublished: boolean('is_published').notNull().default(false),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
   (table) => [
     unique('tutorials_module_order_unique').on(

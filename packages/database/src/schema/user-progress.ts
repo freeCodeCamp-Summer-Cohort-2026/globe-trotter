@@ -51,8 +51,8 @@ export const userProgress = pgTable(
 
     status: userProgressStatusEnum('status').notNull(),
 
-    createdAt: timestamp('created_at').notNull(),
-    updatedAt: timestamp('updated_at').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at').notNull().defaultNow(),
   },
   (table) => [
     unique('user_progress_unique')
@@ -80,12 +80,12 @@ export const userProgress = pgTable(
       columns: [table.tutorialId, table.moduleId],
       foreignColumns: [tutorials.id, tutorials.moduleId],
       name: 'user_progress_tutorial_module_fk',
-    }),
+    }).onDelete('cascade'),
     foreignKey({
       columns: [table.labId, table.moduleId],
       foreignColumns: [labs.id, labs.moduleId],
       name: 'user_progress_lab_module_fk',
-    }),
+    }).onDelete('cascade'),
 
     index('user_progress_user_id_idx').on(table.userId),
     index('user_progress_module_id_idx').on(table.moduleId),

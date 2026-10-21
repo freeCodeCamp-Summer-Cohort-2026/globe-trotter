@@ -86,7 +86,6 @@ describe('Database CRUD operations', () => {
         authorId: author.id,
         title: 'Test Module',
         description: 'Test module description',
-        orderIndex: 1,
         thumbnailUrl: 'https://example.com/thumbnail.png',
         isPublished: false,
         createdAt: new Date(),

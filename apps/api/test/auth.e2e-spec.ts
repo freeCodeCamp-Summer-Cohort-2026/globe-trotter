@@ -2,12 +2,18 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { db, sql, inArray } from '@repo/database';
+import { db, sql, inArray, eq } from '@repo/database';
+import {
+  user as userTable,
+  session as sessionTable,
+} from '@repo/database/src/schema';
 import { AppModule } from '../src/app.module';
-import { user as userTable } from '@repo/database/src/schema';
 
 // TODO: Temporary e2e test users. Relocate to a shared constants file in a later PR.
-const e2eTestUsers = ['e2e-learner@example.com', 'e2e-author@example.com'];
+const learnerEmail: string = 'e2e-learner@example.com';
+const authorEmail: string = 'e2e-author@example.com';
+
+const e2eTestUsers = [learnerEmail, authorEmail];
 
 describe('Authentication and role based access (e2e)', () => {
   let app: INestApplication<App>;
@@ -15,7 +21,6 @@ describe('Authentication and role based access (e2e)', () => {
   let authorAgent: ReturnType<typeof request.agent>;
 
   const password = 'Password123!';
-  const [learnerEmail, authorEmail] = e2eTestUsers;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -25,11 +30,9 @@ describe('Authentication and role based access (e2e)', () => {
     app = moduleRef.createNestApplication({ bodyParser: false });
     await app.init();
 
-    // agent = stores cookies automatically ( for session )
+    // Agents automatically retain session cookies between requests.
     learnerAgent = request.agent(app.getHttpServer() as App);
     authorAgent = request.agent(app.getHttpServer() as App);
-
-    // 1) Create a Learner
     const signUpLearner = await learnerAgent
       .post('/api/auth/sign-up/email')
       .set('Origin', 'http://localhost:3000')
@@ -37,27 +40,37 @@ describe('Authentication and role based access (e2e)', () => {
 
     expect(signUpLearner.status).toBeLessThan(400);
 
-    // 2) Create an Author, update it's role on DB
+
     const signUpAuthor = await authorAgent
       .post('/api/auth/sign-up/email')
       .set('Origin', 'http://localhost:3000')
       .send({ name: 'E2E Author', email: authorEmail, password });
+
     expect(signUpAuthor.status).toBeLessThan(400);
+    await db.execute(
+      sql`update "user" set email_verified = true where email = ${learnerEmail}`,
+    );
+
+    await db.execute(
+      sql`update "user" set email_verified = true where email = ${authorEmail}`,
+    );
+
     await db.execute(
       sql`update "user" set role = 'author' where email = ${authorEmail}`,
     );
 
-    // 3) SignIn for Learner and Author
     const signInLearner = await learnerAgent
       .post('/api/auth/sign-in/email')
       .set('Origin', 'http://localhost:3000')
       .send({ email: learnerEmail, password });
+
     expect(signInLearner.status).toBeLessThan(400);
 
     const signInAuthor = await authorAgent
       .post('/api/auth/sign-in/email')
       .set('Origin', 'http://localhost:3000')
       .send({ email: authorEmail, password });
+
     expect(signInAuthor.status).toBeLessThan(400);
   });
 
@@ -67,8 +80,9 @@ describe('Authentication and role based access (e2e)', () => {
     } catch (err) {
       console.error('Failed to clean up e2e test users:', err);
     }
+
     try {
-      await app.close();
+      await app?.close();
     } catch (err) {
       console.error('App failed to close:', err);
     }
@@ -84,9 +98,7 @@ describe('Authentication and role based access (e2e)', () => {
   ])(
     'returns 401 for an unauthenticated request to %s',
     async (path: string) => {
-      await request(app.getHttpServer() as App)
-        .get(path)
-        .expect(401);
+      await request(app.getHttpServer() as App).get(path).expect(401);
     },
   );
 
@@ -110,5 +122,132 @@ describe('Authentication and role based access (e2e)', () => {
 
   it('author accessing /my-modules returns 200', async () => {
     await authorAgent.get('/my-modules').expect(200);
+  });
+
+  it('sign-out clears cookies, deletes the session, and rejects the old cookie', async () => {
+    const logoutAgent = request.agent(app.getHttpServer() as App);
+
+    const signIn = await logoutAgent
+      .post('/api/auth/sign-in/email')
+      .set('Origin', 'http://localhost:3000')
+      .send({ email: learnerEmail, password });
+
+    expect(signIn.status).toBeLessThan(400);
+
+    const cookies = signIn.headers['set-cookie'] as string[] | undefined;
+    expect(cookies).toBeDefined();
+
+    if (!cookies?.length) {
+      throw new Error('Sign-in did not return session cookies');
+    }
+
+    // Save the original cookie to check that it becomes invalid after logout.
+    const oldCookie = cookies.map((cookie) => cookie.split(';')[0]).join('; ');
+
+    const users = await db
+      .select({ id: userTable.id })
+      .from(userTable)
+      .where(eq(userTable.email, learnerEmail));
+
+    expect(users).toHaveLength(1);
+    const userRecord = users[0];
+
+    if (!userRecord) {
+      throw new Error(`Test user not found: ${learnerEmail}`);
+    }
+
+    const userId = userRecord.id;
+
+    const sessionsBefore = await db
+      .select({ id: sessionTable.id })
+      .from(sessionTable)
+      .where(eq(sessionTable.userId, userId));
+
+    const signOut = await logoutAgent
+      .post('/api/auth/sign-out')
+      .set('Origin', 'http://localhost:3000');
+
+    expect(signOut.status).toBeLessThan(400);
+
+    const clearedCookies = signOut.headers['set-cookie'] as
+      | string[]
+      | undefined;
+
+    expect(clearedCookies).toBeDefined();
+    expect(
+      clearedCookies?.some(
+        (cookie) =>
+          /session_token/i.test(cookie) &&
+          (/max-age=0/i.test(cookie) ||
+          /expires=Thu,\s*01\s*Jan\s*1970/i.test(cookie)),
+      ),
+    ).toBe(true);
+
+    await request(app.getHttpServer() as App)
+      .get('/profile')
+      .set('Cookie', oldCookie)
+      .expect(401);
+
+    const sessionsAfter = await db
+      .select({ id: sessionTable.id })
+      .from(sessionTable)
+      .where(eq(sessionTable.userId, userId));
+
+    expect(sessionsAfter).toHaveLength(sessionsBefore.length - 1);
+  });
+
+  it('allows a user to revoke all their sessions', async () => {
+    const users = await db
+      .select({ id: userTable.id })
+      .from(userTable)
+      .where(eq(userTable.email, learnerEmail));
+
+    expect(users).toHaveLength(1);
+    const userRecord = users[0];
+
+    if (!userRecord) {
+      throw new Error(`Test user not found: ${learnerEmail}`);
+    }
+
+    const userId = userRecord.id;
+
+    /**
+     * Scoped cleanup: sessions from other tests (including the shared
+     * beforeAll agents) would otherwise pollute the count below.
+     * Do NOT move this into a global beforeEach - that would also wipe
+     * learnerAgent and authorAgent sessions used by role tests.
+     */
+    await db
+      .delete(sessionTable)
+      .where(eq(sessionTable.userId, userId));
+
+    const firstAgent = request.agent(app.getHttpServer() as App);
+    const secondAgent = request.agent(app.getHttpServer() as App);
+
+    for (const agent of [firstAgent, secondAgent]) {
+      const signIn = await agent
+        .post('/api/auth/sign-in/email')
+        .set('Origin', 'http://localhost:3000')
+        .send({ email: learnerEmail, password });
+
+      expect(signIn.status).toBeLessThan(400);
+    }
+
+    const revoke = await firstAgent
+      .post('/api/auth/revoke-sessions')
+      .set('Origin', 'http://localhost:3000');
+
+    expect(revoke.status).toBeLessThan(400);
+    expect(revoke.body.status).toBe(true);
+
+    await firstAgent.get('/profile').expect(401);
+    await secondAgent.get('/profile').expect(401);
+
+    const remainingSessions = await db
+      .select({ id: sessionTable.id })
+      .from(sessionTable)
+      .where(eq(sessionTable.userId, userId));
+
+    expect(remainingSessions).toHaveLength(0);
   });
 });

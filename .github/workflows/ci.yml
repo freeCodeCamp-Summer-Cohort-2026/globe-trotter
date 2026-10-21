@@ -57,7 +57,9 @@ jobs:
         run: pnpm --filter types build
 
       - name: Build
-        run: pnpm build  
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:4000
 
       - name: Lint
         run: pnpm lint

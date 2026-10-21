@@ -93,11 +93,22 @@ export function createAuth(emailService: EmailService) {
     database: drizzleAdapter(db, {
       provider: "pg",
     }),
+    session: {
+      expiresIn: 60 * 60 * 24 * 7, // 7 days
+      updateAge: 60 * 60 * 24, // 1 day
+    },
+    advanced: {
+      defaultCookieAttributes: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+      },
+    },
     socialProviders: googleProvider ? { google: googleProvider } : undefined,
     account: {
       accountLinking: {
         enabled: true,
-        trustedProviders: googleProvider ? ['google'] : [],
+        trustedProviders: googleProvider ? ["google"] : [],
       },
     },
     user: {
