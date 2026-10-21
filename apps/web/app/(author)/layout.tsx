@@ -36,16 +36,18 @@ async function getSession(): Promise<Session> {
 export default async function AuthorLayout({ children }: { children: React.ReactNode }) {
   const session = await getSession();
 
-  //! Might need to validate session with zod schema
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") ?? "/author/modules";
 
   // This only runs if the user is trying to navigate to an author-specific route, so doesn't trigger when on Home page e.g.
   if (!session?.user) {
-    redirect("/login?redirect=/author/modules");
+    redirect(`/login?redirect=${encodeURIComponent(pathname)}`);
   }
 
   if (session.user.role !== "author") {
-    redirect("/modules?redirect=/author/modules");
+    redirect("/modules");
   }
+  // `/modules?redirect=${encodeURIComponent(pathname)}`
 
   return (
     <>
