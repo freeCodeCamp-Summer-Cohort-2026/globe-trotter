@@ -14,7 +14,6 @@
     "@next/env": "^16.4.2",
     "@repo/types": "workspace:*",
     "@repo/ui": "workspace:*",
-    "dotenv": "^17.4.2",
     "geist": "1.7.2",
     "next": "16.3.0",
     "react": "19.2.8",

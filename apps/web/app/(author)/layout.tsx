@@ -21,8 +21,9 @@ async function getSession(): Promise<Session> {
     
     return response.json();
   } catch (err) {
-    // This catch block catches network errors, non-2xx status codes and JSON parse failures.
-    // Having no session propagates and is handled by the guard statements in AuthorLayout.
+    //? Network errors, non-2xx responses and JSON parse failures are re-thrown as a generic error so that the error boundary
+    //? can surface them. An unauthenticated user gets a 200 response with a null body, which returns from the try block before
+    //? reaching this catch block - that case is handled by the guard statements in AuthorLayout.
     throw new Error("Could not verify your session. Please refresh the page or try again shortly.", { cause: err });
   }
 }
@@ -31,11 +32,11 @@ export default async function AuthorLayout({ children }: { children: React.React
   const session = await getSession();
 
   if (!session?.user) {
-    redirect("/login");
+    redirect("/login?redirect=/author/modules");
   }
 
   if (session.user.role !== "author") {
-    redirect("/modules");
+    redirect("/modules?redirect=/author/modules");
   }
 
   return (

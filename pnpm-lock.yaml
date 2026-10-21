@@ -141,9 +141,6 @@ importers:
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      dotenv:
-        specifier: ^17.4.2
-        version: 17.4.2
       geist:
         specifier: 1.7.2
         version: 1.7.2(next@16.3.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/node@26.2.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))
