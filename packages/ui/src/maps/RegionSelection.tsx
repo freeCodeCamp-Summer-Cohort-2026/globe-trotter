@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Layer, Source, useMap } from "react-map-gl/maplibre";
 import type { MapLayerMouseEvent } from "react-map-gl/maplibre";
 import type { RegionSelectionValue } from "@repo/types";
@@ -32,6 +32,16 @@ export function RegionSelection({
   const { current: map } = useMap();
   const { data, status } = useCountryBoundaries();
 
+  const valueRef = useRef(value);
+  const onChangeRef = useRef(onChange);
+  const allowDeselectRef = useRef(allowDeselect);
+
+  useEffect(() => {
+    valueRef.current = value;
+    onChangeRef.current = onChange;
+    allowDeselectRef.current = allowDeselect;
+  }, [value, onChange, allowDeselect]);
+
   useEffect(() => {
     // Native MapLibre, per-layer handlers; only attach them after the layer is present.
     if (!map || status !== "ready") return;
@@ -39,11 +49,12 @@ export function RegionSelection({
     const handleClick = (event: MapLayerMouseEvent) => {
       const isoA2 = getIsoA2(event.features?.[0]);
       if (!isoA2) return;
-      if (allowDeselect && value?.iso_a2 === isoA2) {
-        onChange?.(null);
+
+      if (allowDeselectRef.current && valueRef.current?.iso_a2 === isoA2) {
+        onChangeRef.current?.(null);
         return;
       }
-      onChange?.({ iso_a2: isoA2 });
+      onChangeRef.current?.({ iso_a2: isoA2 });
     };
 
     const handleOver = () => {
@@ -63,7 +74,7 @@ export function RegionSelection({
       map.off("mouseout", FILL_LAYER_ID, handleOut);
       map.getCanvas().style.cursor = "";
     };
-  }, [map, status, value, onChange, allowDeselect]);
+  }, [map, status]);
 
   return (
     <Source id={SOURCE_ID} type="geojson" data={data}>
@@ -81,11 +92,15 @@ export function RegionSelection({
       <Layer
         id={HIGHLIGHT_LAYER_ID}
         type="fill"
-        filter={[
-          "any",
-          ["==", ["get", "ISO_A2_EH"], value?.iso_a2 ?? ""],
-          ["==", ["get", "ISO_A2"], value?.iso_a2 ?? ""],
-        ]}
+        filter={
+          value?.iso_a2
+            ? [
+              "any",
+              ["==", ["get", "ISO_A2_EH"], value.iso_a2],
+              ["==", ["get", "ISO_A2"], value.iso_a2],
+            ]
+            : ["==", ["literal", false], true]
+        }
         paint={{
           "fill-color": highlightColor,
           "fill-opacity": 0.4,

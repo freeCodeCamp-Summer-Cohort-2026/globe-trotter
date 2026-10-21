@@ -32,7 +32,8 @@ export function MapHighlight({
   const { data } = useCountryBoundaries();
 
   // Empty string matches no feature, so unset/point values highlight nothing.
-  const countryIso = value?.type === "country" ? value.iso_a2 : "";
+  const countryIso = value?.type === "country" ?
+    value.iso_a2 : null;
 
   const pointData = useMemo<FeatureCollection>(() => {
     if (value?.type !== "point") {
@@ -60,21 +61,29 @@ export function MapHighlight({
         <Layer
           id={COUNTRY_FILL_LAYER_ID}
           type="fill"
-          filter={[
-            "any",
-            ["==", ["get", "ISO_A2_EH"], countryIso],
-            ["==", ["get", "ISO_A2"], countryIso],
-          ]}
+          filter={
+            countryIso
+              ? [
+                "any",
+                ["==", ["get", "ISO_A2_EH"], countryIso],
+                ["==", ["get", "ISO_A2"], countryIso],
+              ]
+              : ["==", ["literal", false], true]
+          }
           paint={{ "fill-color": color, "fill-opacity": fillOpacity }}
         />
         <Layer
           id={COUNTRY_OUTLINE_LAYER_ID}
           type="line"
-          filter={[
-            "any",
-            ["==", ["get", "ISO_A2_EH"], countryIso],
-            ["==", ["get", "ISO_A2"], countryIso],
-          ]}
+          filter={
+            countryIso
+              ? [
+                "any",
+                ["==", ["get", "ISO_A2_EH"], countryIso],
+                ["==", ["get", "ISO_A2"], countryIso],
+              ]
+              : ["==", ["literal", false], true]
+          }
           paint={{ "line-color": color, "line-width": 2 }}
         />
       </Source>

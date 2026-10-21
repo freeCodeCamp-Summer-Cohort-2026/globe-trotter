@@ -21,13 +21,24 @@ let cachedBoundaries: Promise<FeatureCollection> | null = null;
 
 export function loadCountryBoundaries(): Promise<FeatureCollection> {
   cachedBoundaries ??= fetch(COUNTRY_BOUNDARIES_URL)
-    .then((response) => {
+    .then(async (response) => {
       if (!response.ok) {
         throw new Error(
           `country boundaries request failed: ${response.status}`,
         );
       }
-      return response.json() as Promise<FeatureCollection>;
+      const json: unknown = await response.json();
+
+      if (
+        !json ||
+        typeof json !== "object" ||
+        (json as { type?: unknown }).type !== "FeatureCollection" ||
+        !Array.isArray((json as { features?: unknown }).features)
+      ) {
+        throw new Error("Unexpected country boundaries payload shape");
+      }
+
+      return json as FeatureCollection;
     })
     .catch((error) => {
       // Drop the failed promise so a later retry can fetch again.

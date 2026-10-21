@@ -132,6 +132,7 @@ export function MapTemplate<T extends MapTemplateId>({
         doubleClickZoom={interactive}
         touchZoomRotate={interactive}
         keyboard={interactive}
+        interactiveLayerIds={["region-selection-fill"]}
         onLoad={applyToggles}
         onStyleData={applyToggles}
         onClick={handleClick}
