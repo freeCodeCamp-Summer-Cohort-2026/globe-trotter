@@ -134,7 +134,7 @@ export function MapTemplate<T extends MapTemplateId>({
         doubleClickZoom={interactive}
         touchZoomRotate={interactive}
         keyboard={interactive}
-        interactiveLayerIds={[interactiveLayerIds ?? []]}
+        interactiveLayerIds={interactiveLayerIds ?? []}
         onLoad={applyToggles}
         onStyleData={applyToggles}
         onClick={handleClick}
