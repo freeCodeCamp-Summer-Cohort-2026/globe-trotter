@@ -10,6 +10,8 @@ export default async function VerifyEmailPage({
 }) {
   const { error } = await searchParams;
 
+  //TODO: Card w/ padding lg will appear on other auth pages - might be worth extracting into a component later on
+
   if (error) {
     return (
       <Card padding="lg">

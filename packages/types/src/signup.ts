@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 import { passwordSchema } from "./password";
 
 export const signupSchema = z

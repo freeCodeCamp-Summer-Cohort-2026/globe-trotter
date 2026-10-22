@@ -3,3 +3,4 @@ export * from "./api";
 export * from "./password";
 export * from "./maps";
 export * from "./signup";
+export * from "./login";
