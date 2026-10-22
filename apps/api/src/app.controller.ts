@@ -1,8 +1,8 @@
 // app.controller.ts example
 import { Controller, Get } from '@nestjs/common';
-import { Roles, Session, UserSession } from '@thallesp/nestjs-better-auth';
+import { Roles, Session, type UserSession } from '@thallesp/nestjs-better-auth';
 import { AppService } from './app.service';
-import { SessionDto, toSessionDto } from './dto/session.dto';
+import { type SessionDto, toSessionDto } from './dto/session.dto';
 
 // Compile-time-only import (i.e. doesn't pull factory into controller's runtime dependency graph)
 import type { Auth } from './auth/auth';

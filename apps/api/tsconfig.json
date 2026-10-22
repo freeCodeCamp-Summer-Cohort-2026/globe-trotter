@@ -5,8 +5,8 @@
       "node",
       "jest"
     ],
-    "baseUrl": "./",
     "outDir": "./dist",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "useDefineForClassFields": false
   }
 }
