@@ -14,7 +14,7 @@ export default function OAuthButton({ callbackPath, disabled = false, className 
     const windowOrigin = window.location.origin;
     const path = callbackPath && /^\/[^/]/.test(callbackPath) ? callbackPath : "/modules";
     const newPath = new URL(path, windowOrigin);
-    const safePath = newPath.origin === windowOrigin ? callbackPath : "/modules";
+    const safePath = newPath.origin === windowOrigin ? newPath.pathname : "/modules";
 
     const { error } = await authClient.signIn.social({
       provider: "google",
