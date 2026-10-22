@@ -1,7 +1,7 @@
 import getSession from "../../../src/lib/getSession";
-import { Button, Card, EmptyState } from "@repo/ui";
-import { Mail, Whistle } from "lucide-react";
-import { redirect } from "next/navigation";
+import { buttonVariants, Card, EmptyState } from "@repo/ui";
+import { AlertCircle, Mail } from "lucide-react";
+import Link from "next/link";
 
 export default async function VerifyEmailPage({
   searchParams
@@ -14,7 +14,7 @@ export default async function VerifyEmailPage({
     return (
       <Card padding="lg">
         <EmptyState
-          icon={<Whistle className="size-8 text-green-600" aria-hidden="true" />}
+          icon={<AlertCircle className="size-8 text-orange-600" aria-hidden="true" />}
           title="Verification failed"
           description={(
             <>
@@ -24,12 +24,12 @@ export default async function VerifyEmailPage({
           )}
           action={(
             <>
-              <Button variant="primary" onClick={() => redirect("/login")}>
+              <Link href="/login" className={buttonVariants({ variant: "primary" })}>
                 Back to sign in
-              </Button>
-              <Button variant="secondary" onClick={() => redirect("/login?unverified=true")}>
+              </Link>
+              <Link href="/login?unverified=true" className={buttonVariants({ variant: "secondary" })}>
                 Resend verification email
-              </Button>
+              </Link>
             </>
           )}
         />
@@ -38,13 +38,8 @@ export default async function VerifyEmailPage({
   }
 
   // Only bother fetching the session if there is no error
-  const session = getSession();
+  const session = await getSession();
   const existingSession: boolean = session !== null;
-
-  const emailVerifiedButtons = [
-    <Button variant={existingSession ? "primary" : "secondary"} onClick={() => redirect("/modules")}>{"Already signed in?"}</Button>,
-    <Button variant={existingSession ? "secondary" : "primary"} onClick={() => redirect("/login?verified=true")}>{"Sign in"}</Button>,
-  ];
 
   return (
     <Card padding="lg">
@@ -52,9 +47,23 @@ export default async function VerifyEmailPage({
           icon={<Mail className="size-8 text-green-600" aria-hidden="true" />}
           title="Email verified"
           description="Your email address is confirmed. You can now sign in."
-          action={(
+          action={existingSession ? (
             <>
-              {existingSession ? emailVerifiedButtons : emailVerifiedButtons.reverse()}
+              <Link href="/modules" className={buttonVariants({ variant: "primary" })}>
+                Already signed in?
+              </Link>
+              <Link href="/login?verified=true" className={buttonVariants({ variant: "secondary" })}>
+                Sign in
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/login?verified=true" className={buttonVariants({ variant: "primary" })}>
+                Sign in
+              </Link>
+              <Link href="/modules" className={buttonVariants({ variant: "secondary" })}>
+                Already signed in?
+              </Link>
             </>
           )}
         />

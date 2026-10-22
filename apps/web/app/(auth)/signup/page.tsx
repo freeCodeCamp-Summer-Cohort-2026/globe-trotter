@@ -26,7 +26,7 @@ export default function SignupPage() {
 
     const { error } = await authClient.signUp.email({
       ...values,
-      callbackURL: "/verify-email"
+      callbackURL: new URL("/verify-email", window.location.origin).toString()
     });
 
     if (error) {
@@ -115,7 +115,10 @@ export default function SignupPage() {
         <Button
           variant="outline"
           className="w-full"
-          onClick={() => authClient.signIn.social({ provider: "google", callbackURL: "/" })}
+          onClick={() => authClient.signIn.social({
+            provider: "google",
+            callbackURL: new URL("/", window.location.origin).toString()
+          })}
         >
           Continue with Google
         </Button>
