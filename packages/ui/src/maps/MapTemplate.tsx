@@ -25,6 +25,7 @@ export type MapTemplateProps<T extends MapTemplateId = MapTemplateId> = {
   initialState?: Partial<MapViewState>;
   interactionType?: MapInteractionType;
   config?: Partial<MapTemplateConfigMap[T]>;
+  interactiveLayerIds?: string[];
   mode?: MapMode;
   onInteractionChange?: (interaction: MapInteractionType) => void;
   className?: string;
@@ -36,6 +37,7 @@ export function MapTemplate<T extends MapTemplateId>({
   initialState,
   interactionType,
   config,
+  interactiveLayerIds,
   mode = "readOnly",
   onInteractionChange,
   className,
@@ -132,7 +134,7 @@ export function MapTemplate<T extends MapTemplateId>({
         doubleClickZoom={interactive}
         touchZoomRotate={interactive}
         keyboard={interactive}
-        interactiveLayerIds={["region-selection-fill"]}
+        interactiveLayerIds={[interactiveLayerIds ?? []]}
         onLoad={applyToggles}
         onStyleData={applyToggles}
         onClick={handleClick}
