@@ -30,6 +30,28 @@ const MapTemplate = React.lazy(() =>
   })),
 );
 
+type PreviewErrorBoundaryProps = {
+  fallback: React.ReactNode;
+  children: React.ReactNode;
+};
+
+// Keeps a failed preview (chunk load error, no WebGL, etc.) from taking down
+// the surrounding authoring page; the controls keep working without it.
+class PreviewErrorBoundary extends React.Component<
+  PreviewErrorBoundaryProps,
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    return this.state.hasError ? this.props.fallback : this.props.children;
+  }
+}
+
 const subscribeNoop = () => () => {};
 
 // false on the server and during hydration, true once rendering in the browser.
@@ -179,15 +201,29 @@ function TemplatePreview({ selection }: { selection: MapTemplateSelection }) {
       <figcaption className={headingClasses}>Map preview</figcaption>
       <div className="ui:relative ui:aspect-video ui:w-full">
         {isClient ? (
-          <React.Suspense fallback={fallback}>
-            <MapTemplate
-              templateId={templateId}
-              initialState={initialState}
-              config={stableConfig}
-              mode="readOnly"
-              className="ui:absolute ui:inset-0 ui:h-auto ui:min-h-0"
-            />
-          </React.Suspense>
+          <PreviewErrorBoundary
+            fallback={
+              <div
+                role="status"
+                className="ui:absolute ui:inset-0 ui:flex ui:flex-col ui:items-center ui:justify-center ui:gap-1 ui:rounded-2xl ui:border ui:border-slate-200 ui:bg-slate-50 ui:p-4 ui:text-center ui:text-sm ui:text-slate-900"
+              >
+                <span className="ui:font-medium ui:text-slate-950">
+                  Map preview unavailable
+                </span>
+                <span>You can still configure the map below.</span>
+              </div>
+            }
+          >
+            <React.Suspense fallback={fallback}>
+              <MapTemplate
+                templateId={templateId}
+                initialState={initialState}
+                config={stableConfig}
+                mode="readOnly"
+                className="ui:absolute ui:inset-0 ui:h-auto ui:min-h-0"
+              />
+            </React.Suspense>
+          </PreviewErrorBoundary>
         ) : (
           fallback
         )}
