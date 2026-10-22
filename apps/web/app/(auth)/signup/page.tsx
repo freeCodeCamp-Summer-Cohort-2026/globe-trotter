@@ -63,14 +63,14 @@ export default function SignupPage() {
     )
   }
 
-  //TODO: Card w/ padding lg, heading block and Google button w/ divider will appear on other auth forms - might be worth extracting into components later on
+  //TODO: Card w/ padding lg, heading block and Google button w/ divider will appear on other auth pages - might be worth extracting into components later on
 
   return (
     <Card padding="lg">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
         <div className="space-y-1">
           <h1 className="text-2xl font-semibold">Create your account</h1>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-slate-600">
             Start learning geography the interactive way!
           </p>
         </div>
@@ -105,7 +105,7 @@ export default function SignupPage() {
 
         <div className="relative my-2">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
+            <div className="w-full border-t border-slate-300" />
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="bg-white px-2 text-slate-500">or</span>
@@ -120,7 +120,7 @@ export default function SignupPage() {
           Continue with Google
         </Button>
 
-        <p className="text-center text-sm text-slate-400">
+        <p className="text-center text-sm text-slate-600">
           Already have an account?{" "}
           <Link href="/login" className="underline">
             Sign in
