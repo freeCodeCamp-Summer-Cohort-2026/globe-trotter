@@ -37,7 +37,7 @@ export default function LoginForm() {
 
     const { error } = await authClient.signIn.email({
       ...values,
-      callbackURL: redirectUrl ?? `${window.location.origin}/modules`
+      callbackURL: `${window.location.origin}${redirectUrl ?? "/modules"}`
     });
 
     if (!error) return;
@@ -117,7 +117,7 @@ export default function LoginForm() {
         <OrDivider />
 
         <OAuthButton
-          callbackURL={redirectUrl}
+          callbackPath={redirectUrl}
         />
 
         <p className="text-center text-sm text-slate-600">

@@ -4,16 +4,16 @@ import { Button } from "@repo/ui";
 import { authClient } from "../../../src/lib/auth-client";
 
 type OAuthButtonProps = {
-  callbackURL: string | null;
+  callbackPath: string | null;
   disabled?: boolean;
   className?: string;
 }
 
-export default function OAuthButton({ callbackURL, disabled = false, className }: OAuthButtonProps) {
+export default function OAuthButton({ callbackPath, disabled = false, className }: OAuthButtonProps) {
   const handleClick = async () => {
     const { error } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: callbackURL ?? `${window.location.origin}/modules`
+      callbackURL: `${window.location.origin}${callbackPath ?? "/modules"}`
     });
 
     if (error) console.error(`[oauth] OAuth sign-in failed: ${error}`);

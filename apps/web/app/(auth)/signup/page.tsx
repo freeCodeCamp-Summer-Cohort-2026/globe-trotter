@@ -108,7 +108,7 @@ export default function SignupPage() {
         <OrDivider />
 
         <OAuthButton
-          callbackURL={new URL("/modules", window.location.origin).toString()}
+          callbackPath="/verify-email"
         />
 
         <p className="text-center text-sm text-slate-600">
