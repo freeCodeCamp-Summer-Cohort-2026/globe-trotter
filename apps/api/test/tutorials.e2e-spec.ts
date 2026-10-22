@@ -27,7 +27,6 @@ describe('GET /tutorials/:id (e2e)', () => {
       id: moduleId,
       title: 'European Geography',
       description: 'An introduction to Europe.',
-      orderIndex: 1,
       thumbnailUrl: 'https://example.com/europe.png',
       isPublished: true,
       createdAt: timestamp,
