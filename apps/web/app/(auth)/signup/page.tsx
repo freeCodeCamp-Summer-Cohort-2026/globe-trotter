@@ -32,7 +32,7 @@ export default function SignupPage() {
       name: values.name,
       email: values.email,
       password: values.password,
-      callbackURL: new URL("/verify-email", window.location.origin).toString()
+      callbackURL: `${window.location.origin}/verify-email`
     });
 
     if (error) {

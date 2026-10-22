@@ -27,7 +27,7 @@ export default function LoginForm() {
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get("redirect") ?? new URL("/modules", window.location.origin).toString();
+  const redirectUrl = searchParams.get("redirect");
   const justBeenVerified = searchParams.get("verified") === "true";
   const justResetPassword = searchParams.get("reset") === "true";
 
@@ -37,7 +37,7 @@ export default function LoginForm() {
 
     const { error } = await authClient.signIn.email({
       ...values,
-      callbackURL: redirectUrl
+      callbackURL: redirectUrl ?? `${window.location.origin}/modules`
     });
 
     if (!error) return;

@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
 
     const { error } = await authClient.requestPasswordReset({
       ...values,
-      redirectTo: new URL("/reset-password", window.location.origin).toString()
+      redirectTo: `${window.location.origin}/reset-password`
     });
   
     if (error) {
