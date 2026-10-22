@@ -45,7 +45,7 @@ export function createAuth(emailService: EmailService) {
     /* Custom middleware hook needed because Better Auth bypasses the regular NestJS validation pipeline */
     hooks: {
       before: createAuthMiddleware(async (ctx) => {
-        if (ctx.path !== "/signup" && ctx.path !== "/reset-password") return;
+        if (ctx.path !== "/sign-up/email" && ctx.path !== "/reset-password") return;
 
         //? Reset password sends the new password as "newPassword" rather than "password"
         const password = ctx.path === "/reset-password" ? ctx.body?.newPassword : ctx.body?.password;
