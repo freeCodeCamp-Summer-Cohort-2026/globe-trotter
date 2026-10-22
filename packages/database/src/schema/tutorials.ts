@@ -1,4 +1,5 @@
 import {
+  boolean,
   integer,
   index,
   pgTable,
@@ -9,7 +10,6 @@ import {
 } from 'drizzle-orm/pg-core';
 
 import { modules } from './modules';
-import { boolean } from 'drizzle-orm/pg-core';
 
 export const tutorials = pgTable(
   'tutorials',

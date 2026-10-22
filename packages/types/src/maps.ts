@@ -33,6 +33,16 @@ type MapTemplateConfigMap = {
 
 type MapTemplateConfig = MapTemplateConfigMap[MapTemplateId];
 
+// Emitted by the map template selector. Discriminated on `templateId` so
+// `config` always matches the selected template.
+type MapTemplateSelection = {
+  [T in MapTemplateId]: {
+    templateId: T;
+    initialState: MapViewState;
+    config: MapTemplateConfigMap[T];
+  };
+}[MapTemplateId];
+
 // Students render read-only maps; content authors edit interaction goals.
 type MapMode = "readOnly" | "editable";
 
@@ -40,6 +50,7 @@ export type {
   MapMode,
   MapTemplateConfig,
   MapTemplateConfigMap,
+  MapTemplateSelection,
   MapViewState,
   SatelliteConfig,
   WorldPhysicalConfig,
