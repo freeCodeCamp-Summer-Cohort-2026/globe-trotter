@@ -70,3 +70,9 @@ export type {
   ModuleTabsProps,
   TabItem,
 } from "./ModuleTabs";
+
+export { MapTemplateSelector } from "./maps/MapTemplateSelector";
+export type { MapTemplateSelectorProps } from "./maps/MapTemplateSelector";
+
+export { InitialStateControls } from "./maps/InitialStateControls";
+export type { InitialStateControlsProps } from "./maps/InitialStateControls";

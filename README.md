@@ -232,7 +232,7 @@ Better Auth uses the same user record when a Google identity and an email/passwo
     │       └── src/
     │           ├── forms/
     │           ├── lib/            utils.ts
-    │           └── maps/           data.ts, MapTemplate.tsx, mapTemplates.ts
+    │           └── maps/           data.ts, InitialStateControls.tsx, MapTemplate.tsx, MapTemplateSelector.tsx, mapTemplates.ts
     ├── .env.example
     ├── docker-compose.yml
     └── turbo.json
