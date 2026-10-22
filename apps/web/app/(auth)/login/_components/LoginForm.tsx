@@ -27,7 +27,8 @@ export default function LoginForm() {
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get("redirect");
+  const redirectPath = searchParams.get("redirect");
+  const safeRedirect = redirectPath && /^\/[^/]/.test(redirectPath) ? redirectPath : "/modules";
   const justBeenVerified = searchParams.get("verified") === "true";
   const justResetPassword = searchParams.get("reset") === "true";
 
@@ -37,7 +38,7 @@ export default function LoginForm() {
 
     const { error } = await authClient.signIn.email({
       ...values,
-      callbackURL: `${window.location.origin}${redirectUrl ?? "/modules"}`
+      callbackURL: `${window.location.origin}${safeRedirect}`
     });
 
     if (!error) return;
@@ -117,7 +118,7 @@ export default function LoginForm() {
         <OrDivider />
 
         <OAuthButton
-          callbackPath={redirectUrl!}
+          callbackPath={redirectPath}
         />
 
         <p className="text-center text-sm text-slate-600">

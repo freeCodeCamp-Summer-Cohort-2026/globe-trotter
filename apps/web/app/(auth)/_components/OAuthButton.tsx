@@ -4,14 +4,14 @@ import { Button } from "@repo/ui";
 import { authClient } from "../../../src/lib/auth-client";
 
 type OAuthButtonProps = {
-  callbackPath: string;
+  callbackPath: string | null;
   disabled?: boolean;
   className?: string;
 }
 
 export default function OAuthButton({ callbackPath, disabled = false, className }: OAuthButtonProps) {
   const handleClick = async () => {
-    const safePath = /^\/[^/]/.test(callbackPath) ? callbackPath : "/modules";
+    const safePath = callbackPath && /^\/[^/]/.test(callbackPath) ? callbackPath : "/modules";
 
     const { error } = await authClient.signIn.social({
       provider: "google",
