@@ -10,7 +10,7 @@ import { AlertCircle } from "lucide-react";
 import Link from "next/link";
 import AuthCard from "../../_components/AuthCard";
 import AuthHeading from "../../_components/AuthHeading";
-import { redirect, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function ResetPasswordForm() {
   const {
@@ -20,6 +20,8 @@ export default function ResetPasswordForm() {
   } = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema)
   });
+
+  const router = useRouter();
 
   const [serverError, setServerError] = useState<string | null>(null);
   const [tokenError, setTokenError] = useState(false);
@@ -49,7 +51,7 @@ export default function ResetPasswordForm() {
       return;
     }
 
-    redirect("/login?reset=true");
+    router.push("/login?reset=true");
   }
 
   //? If a user manually sets the token in the URL it will still reject when they try to submit the form
