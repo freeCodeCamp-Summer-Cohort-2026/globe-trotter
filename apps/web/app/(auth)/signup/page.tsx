@@ -64,10 +64,8 @@ export default function SignupPage() {
           }
         />
       </AuthCard>
-    )
+    );
   }
-
-  //TODO: Card w/ padding lg, heading block and Google button w/ divider will appear on other auth pages - might be worth extracting into components later on
 
   return (
     <AuthCard>
@@ -119,5 +117,5 @@ export default function SignupPage() {
         </p>
       </form>
     </AuthCard>
-  )
+  );
 }

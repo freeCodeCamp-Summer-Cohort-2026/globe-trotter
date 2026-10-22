@@ -64,10 +64,8 @@ export default function LoginForm() {
           }
         />
       </AuthCard>
-    )
+    );
   }
-
-  //TODO: Card w/ padding lg, heading block and Google button w/ divider will appear on other auth pages - might be worth extracting into components later on
 
   return (
     <AuthCard>
@@ -111,7 +109,7 @@ export default function LoginForm() {
 
         <OrDivider />
 
-        <OAuthButton 
+        <OAuthButton
           callbackURL={redirectUrl}
         />
 
@@ -123,5 +121,5 @@ export default function LoginForm() {
         </p>
       </form>
     </AuthCard>
-  )
+  );
 }
