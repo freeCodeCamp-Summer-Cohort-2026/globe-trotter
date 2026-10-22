@@ -5,9 +5,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "../../../src/lib/auth-client";
-import { Button, Card, EmptyState, FormError, FormField, Input } from "@repo/ui";
+import { Button, EmptyState, FormError, FormField, Input } from "@repo/ui";
 import { Mail } from "lucide-react";
 import Link from "next/link";
+import AuthCard from "../_components/AuthCard";
+import AuthHeading from "../_components/AuthHeading";
+import OAuthButton from "../_components/OAuthButton";
+import OrDivider from "../_components/OrDivider";
 
 export default function SignupPage() {
   const {
@@ -43,7 +47,7 @@ export default function SignupPage() {
 
   if (successEmail) {
     return (
-      <Card padding="lg">
+      <AuthCard>
         <EmptyState
           icon={<Mail className="size-8 text-green-600" aria-hidden="true" />}
           title="Check your email"
@@ -59,21 +63,19 @@ export default function SignupPage() {
             </Button>
           }
         />
-      </Card>
+      </AuthCard>
     )
   }
 
   //TODO: Card w/ padding lg, heading block and Google button w/ divider will appear on other auth pages - might be worth extracting into components later on
 
   return (
-    <Card padding="lg">
+    <AuthCard>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold">Create your account</h1>
-          <p className="text-sm text-slate-600">
-            Start learning geography the interactive way!
-          </p>
-        </div>
+        <AuthHeading
+          title="Create your account"
+          description="Start learning geography the interactive way!"
+        />
 
         {serverError && <FormError>{serverError}</FormError>}
 
@@ -103,26 +105,11 @@ export default function SignupPage() {
           Create account
         </Button>
 
-        <div className="relative my-2">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-300" />
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-2 text-slate-500">or</span>
-          </div>
-        </div>
+        <OrDivider />
 
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full"
-          onClick={() => authClient.signIn.social({
-            provider: "google",
-            callbackURL: new URL("/", window.location.origin).toString()
-          })}
-        >
-          Continue with Google
-        </Button>
+        <OAuthButton
+          callbackURL={new URL("/", window.location.origin).toString()}
+        />
 
         <p className="text-center text-sm text-slate-600">
           Already have an account?{" "}
@@ -131,6 +118,6 @@ export default function SignupPage() {
           </Link>
         </p>
       </form>
-    </Card>
+    </AuthCard>
   )
 }

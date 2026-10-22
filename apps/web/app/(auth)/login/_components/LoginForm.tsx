@@ -5,10 +5,14 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "../../../../src/lib/auth-client";
-import { Button, Card, EmptyState, FormError, FormField, Input } from "@repo/ui";
+import { Button, EmptyState, FormError, FormField, Input } from "@repo/ui";
 import { AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import AuthCard from "../../_components/AuthCard";
+import AuthHeading from "../../_components/AuthHeading";
+import OAuthButton from "../../_components/OAuthButton";
+import OrDivider from "../../_components/OrDivider";
 
 export default function LoginForm() {
   const {
@@ -48,7 +52,7 @@ export default function LoginForm() {
 
   if (unverifiedEmail) {
     return (
-      <Card padding="lg">
+      <AuthCard>
         <EmptyState
           icon={<AlertCircle className="size-8 text-orange-600" aria-hidden="true" />}
           title="Your email isn't verified yet."
@@ -59,21 +63,19 @@ export default function LoginForm() {
             </Button>
           }
         />
-      </Card>
+      </AuthCard>
     )
   }
 
   //TODO: Card w/ padding lg, heading block and Google button w/ divider will appear on other auth pages - might be worth extracting into components later on
 
   return (
-    <Card padding="lg">
+    <AuthCard>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-        <div className="space-y-1">
-          <h1 className="text-2xl font-semibold">Sign in to your account</h1>
-          <p className="text-sm text-slate-600">
-            Continue learning geography the interactive way!
-          </p>
-        </div>
+        <AuthHeading
+          title="Sign in to your account"
+          description="Continue learning geography the interactive way!"
+        />
 
         {justBeenVerified && (
           <div className="rounded-md bg-green-50 p-3 text-sm text-green-700">
@@ -107,26 +109,11 @@ export default function LoginForm() {
           Sign in
         </Button>
 
-        <div className="relative my-2">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-300" />
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-2 text-slate-500">or</span>
-          </div>
-        </div>
+        <OrDivider />
 
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full"
-          onClick={() => authClient.signIn.social({
-            provider: "google",
-            callbackURL: redirectUrl
-          })}
-        >
-          Continue with Google
-        </Button>
+        <OAuthButton 
+          callbackURL={redirectUrl}
+        />
 
         <p className="text-center text-sm text-slate-600">
           Don't have an account?{" "}
@@ -135,6 +122,6 @@ export default function LoginForm() {
           </Link>
         </p>
       </form>
-    </Card>
+    </AuthCard>
   )
 }

@@ -1,7 +1,8 @@
 import getSession from "../../../src/lib/getSession";
-import { buttonVariants, Card, EmptyState } from "@repo/ui";
+import { buttonVariants, EmptyState } from "@repo/ui";
 import { AlertCircle, Mail } from "lucide-react";
 import Link from "next/link";
+import AuthCard from "../_components/AuthCard";
 
 export default async function VerifyEmailPage({
   searchParams
@@ -14,7 +15,7 @@ export default async function VerifyEmailPage({
 
   if (error) {
     return (
-      <Card padding="lg">
+      <AuthCard>
         <EmptyState
           icon={<AlertCircle className="size-8 text-orange-600" aria-hidden="true" />}
           title="Verification failed"
@@ -35,7 +36,7 @@ export default async function VerifyEmailPage({
             </>
           )}
         />
-      </Card>
+      </AuthCard>
     );
   }
 
@@ -44,7 +45,7 @@ export default async function VerifyEmailPage({
   const existingSession: boolean = session !== null;
 
   return (
-    <Card padding="lg">
+    <AuthCard>
       <EmptyState
           icon={<Mail className="size-8 text-green-600" aria-hidden="true" />}
           title="Email verified"
@@ -69,6 +70,6 @@ export default async function VerifyEmailPage({
             </>
           )}
         />
-    </Card>
+    </AuthCard>
   );
 }
