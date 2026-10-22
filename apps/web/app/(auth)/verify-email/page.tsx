@@ -11,7 +11,7 @@ export default async function VerifyEmailPage({
 }) {
   const { error } = await searchParams;
 
-  if (error) {
+  if (error === "invalid_token") {
     return (
       <AuthCard>
         <EmptyState

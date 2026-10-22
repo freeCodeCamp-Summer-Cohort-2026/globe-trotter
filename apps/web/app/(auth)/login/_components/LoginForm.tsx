@@ -118,7 +118,7 @@ export default function LoginForm() {
         <OrDivider />
 
         <OAuthButton
-          callbackPath={redirectPath}
+          callbackPath={safeRedirect}
         />
 
         <p className="text-center text-sm text-slate-600">
