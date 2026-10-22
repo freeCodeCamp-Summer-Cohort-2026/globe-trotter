@@ -11,14 +11,19 @@ type OAuthButtonProps = {
 
 export default function OAuthButton({ callbackPath, disabled = false, className }: OAuthButtonProps) {
   const handleClick = async () => {
-    const safePath = callbackPath && /^\/[^/]/.test(callbackPath) ? callbackPath : "/modules";
+    const windowOrigin = window.location.origin;
+    const path = callbackPath && /^\/[^/]/.test(callbackPath) ? callbackPath : "/modules";
+    const newPath = new URL(path, windowOrigin);
+    const safePath = newPath.origin === windowOrigin ? callbackPath : "/modules";
 
     const { error } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: `${window.location.origin}${safePath}`
+      callbackURL: `${windowOrigin}${safePath}`
     });
 
-    if (error) console.error(`[oauth] OAuth sign-in failed: ${error}`);
+    if (error) {
+      throw new Error(`[oauth] OAuth sign-in failed: ${error}`);
+    }
   }
   
   return (
