@@ -52,6 +52,8 @@ export default function ResetPasswordForm() {
     redirect("/login?reset=true");
   }
 
+  //? If a user manually sets the token in the URL it will still reject when they try to submit the form
+  //? This will change the page back to this state
   if (!token || tokenError) {
     return (
       <AuthCard>

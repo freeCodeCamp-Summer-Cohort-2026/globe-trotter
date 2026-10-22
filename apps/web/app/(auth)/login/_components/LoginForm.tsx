@@ -27,7 +27,7 @@ export default function LoginForm() {
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get("redirect") ?? "/modules";
+  const redirectUrl = searchParams.get("redirect") ?? new URL("/modules", window.location.origin).toString();
   const justBeenVerified = searchParams.get("verified") === "true";
   const justResetPassword = searchParams.get("reset") === "true";
 
