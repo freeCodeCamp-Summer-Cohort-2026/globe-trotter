@@ -28,9 +28,23 @@ const sessionSchema = z.union([
   z.null(),
 ]);
 
+interface TutorialDetail {
+  id: string;
+  moduleId: string;
+  title: string;
+  description: string | null;
+  content: unknown;
+  estimatedDuration: number | null;
+  orderIndex: number;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type {
   ApiError,
-  Session
+  Session,
+  TutorialDetail,
 };
 
 export { sessionSchema };

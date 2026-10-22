@@ -43,11 +43,11 @@ describe('Database schemas', () => {
     expect(tutorials).toHaveProperty('title');
     expect(tutorials).toHaveProperty('description');
     expect(tutorials).toHaveProperty('content');
+    expect(tutorials).toHaveProperty('estimatedDuration');
     expect(tutorials).toHaveProperty('orderIndex');
+    expect(tutorials).toHaveProperty('isPublished');
     expect(tutorials).toHaveProperty('createdAt');
     expect(tutorials).toHaveProperty('updatedAt');
-    expect(tutorials).toHaveProperty('estimatedDuration');
-    expect(tutorials).toHaveProperty('isPublished');
   });
 
   it('labs should have expected fields', () => {
