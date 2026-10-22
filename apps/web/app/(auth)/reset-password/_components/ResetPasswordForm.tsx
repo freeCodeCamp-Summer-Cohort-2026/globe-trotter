@@ -10,8 +10,6 @@ import { AlertCircle } from "lucide-react";
 import Link from "next/link";
 import AuthCard from "../../_components/AuthCard";
 import AuthHeading from "../../_components/AuthHeading";
-import OAuthButton from "../../_components/OAuthButton";
-import OrDivider from "../../_components/OrDivider";
 import { redirect, useSearchParams } from "next/navigation";
 
 export default function ResetPasswordForm() {
