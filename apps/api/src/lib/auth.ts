@@ -11,7 +11,7 @@ if (!secret) {
   );
 }
 
-const url = process.env.BETTER_AUTH_URL ?? "http://localhost:3000";
+const webURL = process.env.WEB_URL ?? "http://localhost:3000";
 
 const loginFailures = new Map<
   string,
@@ -58,8 +58,8 @@ export const auth = betterAuth({
       if (!record) return;
 
       if (record.lockedUntil && Date.now() < record.lockedUntil) {
-        throw new APIError("TOO_MANY_REQUESTS", {
-          message: "Account temporarily locked. Try again later.",
+        throw new APIError("UNAUTHORIZED", {
+          message: "Invalid email or password.",
         });
       }
 
@@ -70,32 +70,39 @@ export const auth = betterAuth({
     }),
 
     after: createAuthMiddleware(async (ctx) => {
-  if (ctx.path !== "/sign-in/email") return;
+      if (ctx.path !== "/sign-in/email") return;
 
-  const email = ctx.body?.email;
+      const email = ctx.body?.email;
 
-  if (typeof email !== "string") return;
+      if (typeof email !== "string") return;
 
-  const key = email.trim().toLowerCase();
-  const result = ctx.context.returned;
+      const key = email.trim().toLowerCase();
+      const result = ctx.context.returned;
 
-  if (!(result instanceof APIError)) {
-    loginFailures.delete(key);
-    return;
-  }
+      // Successful login: clear previous failures.
+      if (!(result instanceof APIError)) {
+        loginFailures.delete(key);
+        return;
+      }
 
-  if (result.body?.code === "INVALID_EMAIL_OR_PASSWORD") {
-    const record = loginFailures.get(key) ?? { count: 0 };
+      if (result.body?.code !== "INVALID_EMAIL_OR_PASSWORD") return;
 
-    record.count += 1;
+      // Only track failures for existing accounts.
+      const userRecord =
+        await ctx.context.internalAdapter.findUserByEmail(key);
 
-    if (record.count >= 10) {
-      record.lockedUntil = Date.now() + 15 * 60 * 1000;
-    }
+      if (!userRecord) return;
 
-    loginFailures.set(key, record);
-  }
-}),
+      const record = loginFailures.get(key) ?? { count: 0 };
+
+      record.count += 1;
+
+      if (record.count >= 10) {
+        record.lockedUntil = Date.now() + 15 * 60 * 1000;
+      }
+
+      loginFailures.set(key, record);
+    }),
   },
 
   rateLimit: {
@@ -108,5 +115,5 @@ export const auth = betterAuth({
     },
   },
 
-  trustedOrigins: ["http://localhost:3000"],
+  trustedOrigins: [webURL],
 });
