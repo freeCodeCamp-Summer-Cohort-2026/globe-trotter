@@ -29,6 +29,7 @@ export default function LoginForm() {
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect") ?? "/modules";
   const justBeenVerified = searchParams.get("verified") === "true";
+  const justResetPassword = searchParams.get("reset") === "true";
 
   const onSubmit = async (values: LoginValues) => {
     setServerError(null);
@@ -78,6 +79,12 @@ export default function LoginForm() {
         {justBeenVerified && (
           <div className="rounded-md bg-green-50 p-3 text-sm text-green-700">
             Email verified. Sign in to continue.
+          </div>
+        )}
+
+        {justResetPassword && (
+          <div className="rounded-md bg-green-50 p-3 text-sm text-green-700">
+            Password updated. Sign in with your new password to continue.
           </div>
         )}
 

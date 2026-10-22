@@ -49,8 +49,8 @@ export default function ForgotPasswordPage() {
           title="Check your email"
           description={(
             <>
-              <p>{`If an email exists for ${submittedEmail}, we've sent a password reset link.`}</p>
-              <p>Check your inbox.</p>
+              {`If an email exists for ${submittedEmail}, we've sent a password reset link.`}
+              Check your inbox.
             </>
           )}
           action={(

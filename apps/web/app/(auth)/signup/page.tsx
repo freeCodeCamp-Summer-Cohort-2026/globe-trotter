@@ -29,7 +29,9 @@ export default function SignupPage() {
     setServerError(null);
 
     const { error } = await authClient.signUp.email({
-      ...values,
+      name: values.name,
+      email: values.email,
+      password: values.password,
       callbackURL: new URL("/verify-email", window.location.origin).toString()
     });
 
