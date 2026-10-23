@@ -3,7 +3,6 @@ jest.mock('@thallesp/nestjs-better-auth', () => {
   const { SetMetadata } =
     jest.requireActual<typeof import('@nestjs/common')>('@nestjs/common');
   return {
-    AllowAnonymous: () => SetMetadata('PUBLIC', true),
     Roles: (roles: string[]) => SetMetadata('ROLES', roles),
   };
 });
@@ -172,6 +171,14 @@ describe('LabsModule', () => {
       );
     });
 
+    it('throws NotFoundException when the lab is not published', async () => {
+      findFirst.mockResolvedValue({ ...labRecord, isPublished: false });
+
+      await expect(labsService.getLab(labId)).rejects.toThrow(
+        NotFoundException,
+      );
+    });
+
     // Security regression guard: `expected` is the answer key for each goal.
     it('never returns `expected` on any goal', async () => {
       findFirst.mockResolvedValue(labRecord);
@@ -196,10 +203,11 @@ describe('LabsModule', () => {
       await expect(labsController.getLab(labId)).resolves.toEqual(labDetail);
     });
 
-    it('allows anonymous access and both learner and author roles', () => {
+    it('requires a session with the learner or author role', () => {
       const handler = LabsController.prototype.getLab;
 
-      expect(Reflect.getMetadata('PUBLIC', handler)).toBe(true);
+      // `PUBLIC` is set by @AllowAnonymous(), which would bypass the auth guard entirely.
+      expect(Reflect.getMetadata('PUBLIC', handler)).toBeUndefined();
       expect(Reflect.getMetadata('ROLES', handler)).toEqual([
         'learner',
         'author',

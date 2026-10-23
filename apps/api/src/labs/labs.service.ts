@@ -24,7 +24,8 @@ export class LabsService {
       where: eq(schema.labs.id, id),
     });
 
-    if (!lab) {
+    // Unpublished labs are drafts, so they are reported as not found rather than revealing that they exist.
+    if (!lab || !lab.isPublished) {
       throw new NotFoundException(`Lab ${id} not found`);
     }
 
