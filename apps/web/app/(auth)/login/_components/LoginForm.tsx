@@ -51,6 +51,7 @@ export default function LoginForm() {
 
     // INVALID_EMAIL_OR_PASSWORD should be swallowed into the server error here
     setServerError("Invalid email or password. Please try again.");
+    console.warn("[auth] Failed to log user in: ", error);
   }
 
   if (unverifiedEmail) {

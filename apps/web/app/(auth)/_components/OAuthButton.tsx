@@ -25,7 +25,7 @@ export default function OAuthButton({ callbackPath, disabled = false, className,
 
     if (error) {
       setOauthError("Google sign-in failed. Please try again.");
-      console.warn("[oauth] OAuth sign-in failed:", error);
+      console.warn("[oauth] OAuth sign-in failed: ", error);
     }
   }
   

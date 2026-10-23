@@ -48,6 +48,7 @@ export default function ResetPasswordForm() {
         return;
       }
       setServerError("Something went wrong. Please try again.");
+      console.warn("[auth] Failed to reset user password: ", error);
       return;
     }
 

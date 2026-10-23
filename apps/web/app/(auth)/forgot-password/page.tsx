@@ -34,7 +34,7 @@ export default function ForgotPasswordPage() {
   
     if (error) {
       setServerError("Something went wrong. Please try again.");
-      console.warn(`[auth] Password reset request failed: ${error}`);
+      console.warn("[auth] Password reset request failed: ", error);
       return;
     }
 

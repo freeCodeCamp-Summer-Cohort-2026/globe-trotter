@@ -41,6 +41,7 @@ export default function SignupPage() {
         setServerError("An account with this email already exists. Try signing in instead.");
       } else {
         setServerError(error.message ?? "Something went wrong. Please try again.");
+        console.warn("[auth] Failed to sign user up: ", error);
       }
       return;
     }
