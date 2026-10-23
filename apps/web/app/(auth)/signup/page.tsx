@@ -23,6 +23,7 @@ export default function SignupPage() {
   });
 
   const [serverError, setServerError] = useState<string | null>(null);
+  const [oauthError, setOauthError] = useState<string | null>(null);
   const [successEmail, setSuccessEmail] = useState<string | null>(null);
 
   const onSubmit = async (values: SignupValues) => {
@@ -109,7 +110,10 @@ export default function SignupPage() {
 
         <OAuthButton
           callbackPath="/verify-email"
+          setOauthError={setOauthError}
         />
+
+        {oauthError && <FormError>{oauthError}</FormError>}
 
         <p className="text-center text-sm text-slate-600">
           Already have an account?{" "}

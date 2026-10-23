@@ -24,6 +24,7 @@ export default function LoginForm() {
   });
 
   const [serverError, setServerError] = useState<string | null>(null);
+  const [oauthError, setOauthError] = useState<string | null>(null);
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
@@ -119,7 +120,10 @@ export default function LoginForm() {
 
         <OAuthButton
           callbackPath={safeRedirect}
+          setOauthError={setOauthError}
         />
+
+        {oauthError && <FormError>{oauthError}</FormError>}
 
         <p className="text-center text-sm text-slate-600">
           Don't have an account?{" "}

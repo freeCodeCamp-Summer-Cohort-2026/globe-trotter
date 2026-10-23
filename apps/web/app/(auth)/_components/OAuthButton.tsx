@@ -2,14 +2,16 @@
 
 import { Button } from "@repo/ui";
 import { authClient } from "../../../src/lib/auth-client";
+import type { Dispatch, SetStateAction } from "react";
 
 type OAuthButtonProps = {
   callbackPath: string | null;
   disabled?: boolean;
   className?: string;
+  setOauthError: Dispatch<SetStateAction<string | null>>;
 }
 
-export default function OAuthButton({ callbackPath, disabled = false, className }: OAuthButtonProps) {
+export default function OAuthButton({ callbackPath, disabled = false, className, setOauthError }: OAuthButtonProps) {
   const handleClick = async () => {
     const windowOrigin = window.location.origin;
     const path = callbackPath && /^\/[^/]/.test(callbackPath) ? callbackPath : "/modules";
@@ -22,7 +24,7 @@ export default function OAuthButton({ callbackPath, disabled = false, className 
     });
 
     if (error) {
-      throw new Error(`[oauth] OAuth sign-in failed: ${error}`);
+      setOauthError(`[oauth] OAuth sign-in failed: ${error}`);
     }
   }
   
