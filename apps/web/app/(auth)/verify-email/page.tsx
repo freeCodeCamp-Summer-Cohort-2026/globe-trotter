@@ -28,7 +28,7 @@ export default async function VerifyEmailPage({
               <Link href="/login" className={buttonVariants({ variant: "primary" })}>
                 Back to sign in
               </Link>
-              <Link href="/login?unverified=true" className={buttonVariants({ variant: "secondary" })}>
+              <Link href="/login?verified=false" className={buttonVariants({ variant: "secondary" })}>
                 Resend verification email
               </Link>
             </>
