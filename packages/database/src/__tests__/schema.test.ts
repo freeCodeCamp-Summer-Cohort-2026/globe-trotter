@@ -70,6 +70,7 @@ describe('Database schemas', () => {
     expect(userProgress).toHaveProperty('tutorialId');
     expect(userProgress).toHaveProperty('labId');
     expect(userProgress).toHaveProperty('status');
+    expect(userProgress).toHaveProperty('attempts');
     expect(userProgress).toHaveProperty('createdAt');
     expect(userProgress).toHaveProperty('updatedAt');
   });

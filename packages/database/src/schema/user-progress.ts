@@ -4,6 +4,7 @@ import {
   text,
   check,
   index,
+  integer,
   pgEnum,
   pgTable,
   timestamp,
@@ -50,6 +51,9 @@ export const userProgress = pgTable(
     }),
 
     status: userProgressStatusEnum('status').notNull(),
+
+    // Number of lab submissions made by the user - never reset, even after the lab is completed.
+    attempts: integer('attempts').notNull().default(0),
 
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at').notNull().defaultNow(),
