@@ -46,12 +46,31 @@ type MapTemplateSelection = {
 // Students render read-only maps; content authors edit interaction goals.
 type MapMode = "readOnly" | "editable";
 
+// Non-drawing interaction values (issue #113) — controlled value/onChange
+// contracts shared by the map interaction components and their consumers.
+type RegionSelectionValue = { iso_a2: string };
+
+type MapHighlightValue =
+  | { type: "country"; iso_a2: string }
+  | { type: "point"; coordinates: [number, number]; label?: string };
+
+type MapZoomTarget = {
+  longitude: number;
+  latitude: number;
+  zoom?: number;
+  bearing?: number;
+  pitch?: number;
+};
+
 export type {
+  MapHighlightValue,
   MapMode,
   MapTemplateConfig,
   MapTemplateConfigMap,
   MapTemplateSelection,
   MapViewState,
+  MapZoomTarget,
+  RegionSelectionValue,
   SatelliteConfig,
   WorldPhysicalConfig,
   WorldPoliticalConfig,

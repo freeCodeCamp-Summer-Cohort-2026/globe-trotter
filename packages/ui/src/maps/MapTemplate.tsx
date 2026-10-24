@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, type ReactNode } from "react";
 import Map, {
   Layer,
   NavigationControl,
@@ -25,9 +25,11 @@ export type MapTemplateProps<T extends MapTemplateId = MapTemplateId> = {
   initialState?: Partial<MapViewState>;
   interactionType?: MapInteractionType;
   config?: Partial<MapTemplateConfigMap[T]>;
+  interactiveLayerIds?: string[];
   mode?: MapMode;
   onInteractionChange?: (interaction: MapInteractionType) => void;
   className?: string;
+  children?: ReactNode;
 };
 
 export function MapTemplate<T extends MapTemplateId>({
@@ -35,9 +37,11 @@ export function MapTemplate<T extends MapTemplateId>({
   initialState,
   interactionType,
   config,
+  interactiveLayerIds,
   mode = "readOnly",
   onInteractionChange,
   className,
+  children,
 }: MapTemplateProps<T>) {
   const mapRef = useRef<MapRef>(null);
   const definition = mapTemplates[templateId];
@@ -130,6 +134,7 @@ export function MapTemplate<T extends MapTemplateId>({
         doubleClickZoom={interactive}
         touchZoomRotate={interactive}
         keyboard={interactive}
+        interactiveLayerIds={interactiveLayerIds ?? []}
         onLoad={applyToggles}
         onStyleData={applyToggles}
         onClick={handleClick}
@@ -209,6 +214,7 @@ export function MapTemplate<T extends MapTemplateId>({
         ) : null}
 
         {interactive ? <NavigationControl position="top-right" /> : null}
+        {children}
       </Map>
     </div>
   );
