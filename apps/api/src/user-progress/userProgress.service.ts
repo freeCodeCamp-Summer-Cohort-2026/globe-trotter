@@ -1,5 +1,5 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import type { Db, SQLWrapper } from '@repo/database';
+import type { Db } from '@repo/database';
 import { eq, and, userProgress, isNull } from '@repo/database';
 import { DRIZZLE } from '../database/database.module';
 import { ListUserProgressQueryDto } from './dto/list-user-progress-query.dto';
@@ -10,7 +10,7 @@ export class UserProgressService {
   constructor(@Inject(DRIZZLE) private readonly db: Db) {}
 
   async findAllForUser(userId: string, filters: ListUserProgressQueryDto): Promise<UserProgressRow[]> {
-    const conditions: SQLWrapper[] = [eq(userProgress.userId, userId)];
+    const conditions = [eq(userProgress.userId, userId)];
 
     if (filters.moduleId) {
       conditions.push(eq(userProgress.moduleId, filters.moduleId));
@@ -34,21 +34,21 @@ export class UserProgressService {
     }
 
     //? Query for an existing row if I want to differentiate between 201 for insert and 200 for update
-    // const [existing] = await this.db
-    //   .select({ id: userProgress.id })
-    //   .from(userProgress)
-    //   .where(
-    //     and(
-    //       eq(userProgress.userId, userId),
-    //       eq(userProgress.moduleId, dto.moduleId),
-    //       dto.tutorialId ? eq(userProgress.tutorialId, dto.tutorialId) : isNull(userProgress.tutorialId),
-    //       dto.labId ? eq(userProgress.labId, dto.labId) : isNull(userProgress.labId)
-    //     )
-    //   );
+    const [existing] = await this.db
+      .select({ id: userProgress.id })
+      .from(userProgress)
+      .where(
+        and(
+          eq(userProgress.userId, userId),
+          eq(userProgress.moduleId, dto.moduleId),
+          dto.tutorialId ? eq(userProgress.tutorialId, dto.tutorialId) : isNull(userProgress.tutorialId),
+          dto.labId ? eq(userProgress.labId, dto.labId) : isNull(userProgress.labId)
+        )
+      );
     
-    // if (existing) {
-    //   // Update logic --> PATCH
-    // }
+    if (existing) {
+      // Update logic --> PATCH
+    }
 
     const values = {
       userId,
