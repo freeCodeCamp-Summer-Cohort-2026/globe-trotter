@@ -94,26 +94,26 @@ pnpm dev
 
 ## Environment Variables
 
-| Variable | Local default | Notes |
-| --- | --- | --- |
-| `NODE_ENV` | `development` | Automatically set to `test` in tests - should be `development` locally |
-| `POSTGRES_USER` | `globe-trotter` | |
-| `POSTGRES_PASSWORD` | `CHANGE_ME_BEFORE_USE` | You must choose a password to use locally |
-| `POSTGRES_DB` | `globe_trotter` | |
-| `DATABASE_URL` | `postgres://globe-trotter:CHANGE_ME_PASSWORD@localhost:5432/globe_trotter` | Replace `CHANGE_ME_PASSWORD` with your value for `POSTGRES_PASSWORD` |
-| `TEST_DATABASE_URL` | `postgres://globe-trotter:CHANGE_ME_PASSWORD@localhost:5432/globe_trotter_test` | Replace `CHANGE_ME_PASSWORD` with your value for `POSTGRES_PASSWORD` |
-| `MIGRATION_TEST_DATABASE_URL` | `postgres://globe-trotter:CHANGE_ME_PASSWORD@localhost:5432/globe_trotter_migration_test` | Replace `CHANGE_ME_PASSWORD` with your value for `POSTGRES_PASSWORD` |
-| `WEB_URL` | `http://localhost:3000` | Must match the web dev port |
-| `NEXT_PUBLIC_API_URL` | `http://localhost:4000` | |
-| `BETTER_AUTH_SECRET` | `CHANGE_ME` | Run `openssl rand -base64 32` in the terminal and replace `CHANGE_ME` with the output |
-| `BETTER_AUTH_URL` | `http://localhost:4000` | |
-| `GOOGLE_CLIENT_ID` | `CHANGE_ME` | See the "Google OAuth setup" section below |
-| `GOOGLE_CLIENT_SECRET` | `CHANGE_ME` | See the "Google OAuth setup" section below |
-| `EMAIL_PROVIDER` | `smtp` | Can change to `stub` for testing; change to `resend` for production |
-| `EMAIL_FROM` | `noreply@localhost` | Do not change for now - there is no domain so Resend will not work - see the "Local email testing" section below for more details |
-| `RESEND_API_KEY` | `CHANGE_ME_API_KEY` | Do not change for now - there is no domain so Resend will not work - see the "Local email testing" section below for more details |
-| `SMTP_HOST` | `localhost` | |
-| `SMTP_PORT` | `1025` | |
+| Variable                      | Local default                                                                             | Notes                                                                                                                             |
+| ----------------------------- | ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `NODE_ENV`                    | `development`                                                                             | Automatically set to `test` in tests - should be `development` locally                                                            |
+| `POSTGRES_USER`               | `globe-trotter`                                                                           |                                                                                                                                   |
+| `POSTGRES_PASSWORD`           | `CHANGE_ME_BEFORE_USE`                                                                    | You must choose a password to use locally                                                                                         |
+| `POSTGRES_DB`                 | `globe_trotter`                                                                           |                                                                                                                                   |
+| `DATABASE_URL`                | `postgres://globe-trotter:CHANGE_ME_PASSWORD@localhost:5432/globe_trotter`                | Replace `CHANGE_ME_PASSWORD` with your value for `POSTGRES_PASSWORD`                                                              |
+| `TEST_DATABASE_URL`           | `postgres://globe-trotter:CHANGE_ME_PASSWORD@localhost:5432/globe_trotter_test`           | Replace `CHANGE_ME_PASSWORD` with your value for `POSTGRES_PASSWORD`                                                              |
+| `MIGRATION_TEST_DATABASE_URL` | `postgres://globe-trotter:CHANGE_ME_PASSWORD@localhost:5432/globe_trotter_migration_test` | Replace `CHANGE_ME_PASSWORD` with your value for `POSTGRES_PASSWORD`                                                              |
+| `WEB_URL`                     | `http://localhost:3000`                                                                   | Must match the web dev port                                                                                                       |
+| `NEXT_PUBLIC_API_URL`         | `http://localhost:4000`                                                                   |                                                                                                                                   |
+| `BETTER_AUTH_SECRET`          | `CHANGE_ME`                                                                               | Run `openssl rand -base64 32` in the terminal and replace `CHANGE_ME` with the output                                             |
+| `BETTER_AUTH_URL`             | `http://localhost:4000`                                                                   |                                                                                                                                   |
+| `GOOGLE_CLIENT_ID`            | `CHANGE_ME`                                                                               | See the "Google OAuth setup" section below                                                                                        |
+| `GOOGLE_CLIENT_SECRET`        | `CHANGE_ME`                                                                               | See the "Google OAuth setup" section below                                                                                        |
+| `EMAIL_PROVIDER`              | `smtp`                                                                                    | Can change to `stub` for testing; change to `resend` for production                                                               |
+| `EMAIL_FROM`                  | `noreply@localhost`                                                                       | Do not change for now - there is no domain so Resend will not work - see the "Local email testing" section below for more details |
+| `RESEND_API_KEY`              | `CHANGE_ME_API_KEY`                                                                       | Do not change for now - there is no domain so Resend will not work - see the "Local email testing" section below for more details |
+| `SMTP_HOST`                   | `localhost`                                                                               |                                                                                                                                   |
+| `SMTP_PORT`                   | `1025`                                                                                    |                                                                                                                                   |
 
 ## Running the Apps
 
@@ -142,7 +142,7 @@ The web is on port `3000`; the API is on port `4000`.
 - `pnpm db:migrate`
 - `pnpm db:generate` (after schema changes)
 - `pnpm db:studio`
-- `pnpm db:seed` (currently a no-op - no seed data yet)
+- `pnpm db:seed`
 
 ## Testing scripts
 
@@ -242,10 +242,10 @@ Better Auth uses the same user record when a Google identity and an email/passwo
 
 ## Troubleshooting
 
-| Error message | Cause | Fix |
-| --- | --- | --- |
-| "relation does not exist" | test DB not migrated | `pnpm --filter @repo/database db:migrate` |
-| "Cannot find module '@repo/types'" | types package not built | `pnpm --filter @repo/types dev` |
-| `403 MISSING_OR_NULL_ORIGIN` | WEB_URL doesn't match the web dev port | Ensure that ports used in `WEB_URL` and dev script in `/apps/web/package.json` are matching |
-| `EADDRINUSE :4000` | another API process is running | For linux/macos use `kill -9 <process-id>`, for windows use `taskkill /PID <process-id> /F` |
-| "database does not exist" | Either main DB or test DBs were not created | Run the psql CREATE DATABASE cmds |
+| Error message                      | Cause                                       | Fix                                                                                         |
+| ---------------------------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| "relation does not exist"          | test DB not migrated                        | `pnpm --filter @repo/database db:migrate`                                                   |
+| "Cannot find module '@repo/types'" | types package not built                     | `pnpm --filter @repo/types dev`                                                             |
+| `403 MISSING_OR_NULL_ORIGIN`       | WEB_URL doesn't match the web dev port      | Ensure that ports used in `WEB_URL` and dev script in `/apps/web/package.json` are matching |
+| `EADDRINUSE :4000`                 | another API process is running              | For linux/macos use `kill -9 <process-id>`, for windows use `taskkill /PID <process-id> /F` |
+| "database does not exist"          | Either main DB or test DBs were not created | Run the psql CREATE DATABASE cmds                                                           |
